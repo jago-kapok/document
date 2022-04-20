@@ -14,6 +14,7 @@ var table = $("table#table_data").DataTable({
   bLengthChange : false,
   serverSide	: true,
   scrollX		: true,
+  order : [4, 'desc'],
   ajax	: {
 	url	: "<?= base_url('history/getData'); ?>",
 	type: "GET"
@@ -27,7 +28,7 @@ var table = $("table#table_data").DataTable({
     data: "doc_sign_file",
     render: function(data, type, row){
       if(row.doc_status == 3){
-        return '<a href="<?= base_url() ?>reports/' + row.doc_folder + '/' + data + '" class="btn btn-success btn-sm" target="_blank"><i class="bi-download"></i>&nbsp;&nbsp;Cetak Tanda Terima</a>';
+        return '<a href="<?= base_url() ?>prints/doc/' + row.doc_id + '" class="btn btn-success btn-sm" target="_blank"><i class="bi-printer"></i>&nbsp;&nbsp;Cetak Tanda Terima</a>';
       } else {
         return '-';
       }

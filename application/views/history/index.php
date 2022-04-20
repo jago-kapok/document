@@ -7,9 +7,7 @@
 	</nav>
   <div class="row mb-2">
 		<div class="col-md-8 mb-1">
-		  <!-- <a href="<?= base_url() ?>company/create" class="btn btn-primary"><span class="btn-icon" data-feather="plus-square"></span>
-		    &nbsp;&nbsp;Tambah Data
-		  </a> -->
+			
 		</div>
 		<div class="col-md-4 pull-right">
 		  <div class="input-group">

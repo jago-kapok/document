@@ -14,29 +14,30 @@ var table = $("table#table_data").DataTable({
   bLengthChange : false,
   serverSide  : true,
   scrollX   : true,
+  order: [6, 'desc'],
   ajax  : {
   url : "<?= base_url('report/getData'); ?>",
-  type: "GET"
+    type: "GET"
   },
   iDisplayLength: 10,
   columns: [
-  {data: null,      className: "text-left"},
-  {data: "company_name",  className: "text-left"},
-  {data: "company_address",   className: "text-left"},
-  {data: "company_pic", className: "text-left"},
-  {
-    data: "status_desc",
-    render: function(data, type, row){
-      return '<span class="badge bg-' + row.status_color + '">' + data + '</span>';
+    {data: null,      className: "text-left"},
+    {data: "company_name",  className: "text-left"},
+    {data: "company_address",   className: "text-left"},
+    {data: "company_pic", className: "text-left"},
+    {
+      data: "status_desc",
+      render: function(data, type, row){
+        return '<span class="badge bg-' + row.status_color + '">' + data + '</span>';
+      }
+    },
+    {data: "doc_verified_at", className: "text-left"},
+    {
+      data: "doc_id",
+      render: function(data, type, row){
+        return '<a href="<?= base_url() ?>report/view/' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>';
+      }
     }
-  },
-  {data: "doc_verified_at", className: "text-left"},
-  {
-    data: "doc_id",
-    render: function(data, type, row){
-      return '<a href="<?= base_url() ?>report/view/' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>';
-    }
-  }
   
   ],
   rowCallback: function(row, data, iDisplayIndex){

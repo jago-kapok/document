@@ -87,7 +87,7 @@ class Register extends CI_Controller
                 'company_id'    => $company_id,
                 'user_name'     => $auth_email,
                 'user_password' => password_hash($auth_pass, PASSWORD_BCRYPT),
-                'user_level'    => 1,
+                'user_level'    => 2,
                 'user_status'   => 1
             );
 

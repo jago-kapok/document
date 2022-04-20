@@ -65,23 +65,4 @@ class History extends CI_Controller
         $this->load->view('history/view', $data);
         $this->load->view('templates/footer');
     }
-
-    public function delete()
-    {
-        $id = $this->uri->segment(3);
-
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$this->db->set('company_status', 0);
-        	$this->db->where('company_id', $id);
-        	$this->db->update("company");
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-    }
 }

@@ -4,7 +4,7 @@
       <footer class="footer mt-5">
         <div class="container-fluid">
           <div class="row text-muted">
-            <div class="col-6 text-start">
+            <div class="col-12 text-start">
               <p class="mb-0">
                 <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Dinas Lingkungan Hidup Kab. Bojonegoro</strong></a> &copy; 2022
               </p>
@@ -54,6 +54,16 @@
         title: 'SIPP DOKLING v1.0',
         html: "Dinas Lingkungan Hidup Kab. Bojonegoro &copy; 2022",
         icon: 'warning',
+        showConfirmButton: true
+      });
+    }
+
+    /* Lihat Catatan Penolakan */
+    function lihatCatatan(note) {
+      Swal.fire({
+        title: 'NOTE !',
+        text: note,
+        icon: 'info',
         showConfirmButton: true
       });
     }

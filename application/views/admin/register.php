@@ -1,5 +1,5 @@
 <!-- Section: Design Block -->
-  <div class="container px-4 py-1 px-md-5 text-center text-lg-start my-5">
+  <div class="container px-4 px-md-5 text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="col-lg-8 offset-md-2 mb-5 mb-lg-0 position-relative">
         <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>

@@ -30,7 +30,7 @@
                   <td>
                     <span class="badge bg-<?php echo $value['status_color'] ?>"><?php echo $value['status_desc'] ?></span>
                     <?php if($value['doc_status'] == 4) { ?>
-                      <a href="javascript:void(0)" class="badge bg-info" onclick="alert('<?php echo $value['doc_rejected_note'] ?>')">Alasan</a>
+                      <a href="javascript:void(0)" class="badge bg-info" onclick="lihatCatatan('<?php echo $value['doc_rejected_note'] ?>')">Catatan</a>
                     <?php } ?>
                   </td>
                   <td><?php echo $value['doc_modified_at'] ?></td>

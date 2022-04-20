@@ -27,17 +27,15 @@
 	    <div class="row">
 	      <div class="col-md-12">
 	      	<div class="row mb-3">
-	          <!-- <label class="col-md-2 col-form-label">Periode Laporan <span class="text-danger">*</span></label>
-	          <div class="col-md-2">
-	          	<input type="number" name="doc_periode" class="form-control">
-	          </div> -->
-	          <?php if($doc && $doc->doc_status != 1) { ?>
-		          <div class="col-md-12">
-		          	<div class="d-flex justify-content-end">
-		          		<button type="button" class="btn btn-primary" onclick="kirimLaporan(<?php echo $doc->doc_id ?>)"><span class="btn-icon" data-feather="send"></span>&nbsp;&nbsp;Kirim Laporan</button>
-		          	</div>
-		          </div>
-		        <?php } ?>
+	      		<?php if($doc) { ?>
+							<?php if($doc->doc_status != 2) { ?>
+								<div class="col-md-12">
+			          	<div class="d-flex justify-content-end">
+			          		<button type="button" class="btn btn-primary" onclick="kirimLaporan(<?php echo $doc->doc_id ?>)"><span class="btn-icon" data-feather="send"></span>&nbsp;&nbsp;Kirim Laporan</button>
+			          	</div>
+			          </div>
+							<?php } ?>
+						<?php } ?>
 	        </div>
 	      	<div class="container-fluid bg-info p-1 mb-3">
 	      		<span class="text-light"><center><b>DOKUMEN YANG HARUS DILENGKAPI</b></center></span>
@@ -62,7 +60,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc1->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc1->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -108,7 +106,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc2->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc2->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -154,7 +152,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc3->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc3->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -200,7 +198,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc4->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc4->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -246,7 +244,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc5->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc5->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -292,7 +290,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc6->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc6->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -338,7 +336,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc7->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc7->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -384,7 +382,7 @@
 			          <div class="col-md-3">
 									<div class="d-flex align-items-center text-danger">
 									  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-									  <div class="ms-3"><a href="javascript:void(0)" onclick="rejectedReason('<?php echo $doc8->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+									  <div class="ms-3"><a href="javascript:void(0)" onclick="lihatCatatan('<?php echo $doc8->doc_rejected_note ?>')">Dokumen Ditolak</a></div>
 									</div>
 								</div>
 							<?php } else { ?>
@@ -421,7 +419,6 @@
 				      </div>
 
 				      <form id="formDeskripsiKegiatan">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="1">
 					      <div class="modal-body">
 					        <input id="file_deskripsi_kegiatan" type="file" name="file_deskripsi_kegiatan" class="form-control" accept="application/pdf">
@@ -444,7 +441,6 @@
 				      </div>
 
 				      <form id="formLaporanKLPL">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="2">
 					      <div class="modal-body">
 					        <input id="file_laporan_klpl" type="file" name="file_laporan_klpl" class="form-control" accept="application/pdf">
@@ -467,7 +463,6 @@
 				      </div>
 
 				      <form id="formLaporanPencemaranAir">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="3">
 					      <div class="modal-body">
 					        <input id="file_laporan_pencemaran_air" type="file" name="file_laporan_pencemaran_air" class="form-control" accept="application/pdf">
@@ -490,7 +485,6 @@
 				      </div>
 
 				      <form id="formLaporanPencemaranUdara">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="4">
 					      <div class="modal-body">
 					        <input id="file_laporan_pencemaran_udara" type="file" name="file_laporan_pencemaran_udara" class="form-control" accept="application/pdf">
@@ -513,7 +507,6 @@
 				      </div>
 
 				      <form id="formLaporanLimbah">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="5">
 					      <div class="modal-body">
 					        <input id="file_laporan_limbah" type="file" name="file_laporan_limbah" class="form-control" accept="application/pdf">
@@ -536,7 +529,6 @@
 				      </div>
 
 				      <form id="formLaporanDampak">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="6">
 					      <div class="modal-body">
 					        <input id="file_laporan_dampak" type="file" name="file_laporan_dampak" class="form-control" accept="application/pdf">
@@ -559,7 +551,6 @@
 				      </div>
 
 				      <form id="formLaporanIjin">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="7">
 					      <div class="modal-body">
 					        <input id="file_laporan_ijin" type="file" name="file_laporan_ijin" class="form-control" accept="application/pdf">
@@ -582,10 +573,10 @@
 				      </div>
 
 				      <form id="formDokumentasi">
-				      	<input type="hidden" name="company_id" value="1">
 				      	<input type="hidden" name="file_type_id" value="8">
 					      <div class="modal-body">
 					        <input id="file_dokumentasi" type="file" name="file_dokumentasi" class="form-control" accept="application/pdf">
+					        <div class="form-text">Foto dijadikan satu dalam file PDF</div>
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -1052,15 +1043,5 @@
         });
       }
     })
-  }
-
-  /* KIRIM LAPORAN */
-  function rejectedReason(note) {
-    Swal.fire({
-      title: 'INFO !',
-      text: note,
-      icon: 'warning',
-      showConfirmButton: true
-    });
   }
 </script>

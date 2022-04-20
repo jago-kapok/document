@@ -4,7 +4,6 @@
 	</div>
 
 	<div class="row" data-aos="zoom-in">
-			
 		<?php foreach ($doc as $key => $value) { ?>
 			<div class="col-md-4">
 				<div class="card border-<?php echo $color = $value['doc_status'] == 2 ? 'primary' : $value['status_color'] ?> p-3" style="border: 2px solid">

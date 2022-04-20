@@ -9,16 +9,23 @@ class PDF extends FPDF {
 
     function Header(){
 		$this->SetXY(5,5);
-		$this->SetFont('Arial','B',15);
-		$this->Cell(169, 6, 'PANDU MULYA', 0, 2, 'L');
+		$this->SetFont('Arial','B',12);
 
-		$this->SetFont('Arial','I',9);
-		$this->Cell(169, 5, 'Jalan Guyangan - Berbek', 0, 2, 'L');
-		$this->Cell(169, 5, 'Ds. Gandu Kec. Bagor Kab. Nganjuk', 0, 2, 'L');
-		$this->Cell(169, 5, 'Telp. 0822 2933 2933', 0, 2, 'L');
+		$this->Image('./assets/dist/img/logo_full.png', 10, 10, 15);
+		$this->Cell(200, 6, '', 'LRT', 2, 'C');
+		$this->Cell(25, 6, '', 'L', 0, 'C');
+		$this->Cell(175, 6, 'TANDA TERIMA', 'R', 1, 'C');
+
+		// $this->SetFont('Arial','B',12);
+		$this->Cell(25, 6, '', 'L', 0, 'C');
+		$this->Cell(175, 6, 'SISTEM PELAPORAN PENGELOLAAN DOKUMEN LINGKUNGAN', 'R', 1, 'C');
+
+		$this->Cell(25, 6, '', 'L', 0, 'C');
+		$this->Cell(175, 6, 'DINAS LINGKUNGAN HIDUP KABUPATEN BOJONEGORO', 'R', 1, 'C');
+		$this->Cell(200, 6, '', 'LRB', 1, 'C');
 		
-		$this->Line(5, 33, 210, 33);
-		$this->Line(5, 34, 210, 34);
+		// $this->Line(5, 33, 210, 33);
+		// $this->Line(5, 34, 210, 34);
 		$this->Ln();
 	}
 

@@ -12,24 +12,26 @@ class SendReport extends CI_Controller
     public function index()
     {
     	$company_id = $this->session->userdata('company_id');
+    	$data['company_id'] = $company_id;
+
         $data['title'] = 'Pelaporan Dokumen Lingkungan';
         $data['doc']	= $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-        $data['doc1'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>1, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc2'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>2, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc3'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>3, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc4'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>4, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc5'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>5, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc6'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>6, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc7'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>7, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
-        $data['doc8'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>8, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')
-        					->get('document_detail')->row();
+
+        $data['doc1'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>1, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc2'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>2, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc3'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>3, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc4'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>4, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc5'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>5, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc6'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>6, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc7'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>7, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+
+        $data['doc8'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>8, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
 
         $this->load->view('templates/header', $data);
         $this->load->view('send-report/index', $data);
@@ -41,7 +43,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_deskripsi_kegiatan']['error'] > 0) {
@@ -52,7 +54,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -60,7 +62,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -75,20 +78,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_deskripsi_kegiatan");
+			$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_deskripsi_kegiatan");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_deskripsi_kegiatan");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -102,7 +119,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_klpl']['error'] > 0) {
@@ -113,7 +130,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -121,7 +138,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -136,20 +154,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_laporan_klpl");
+			$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_klpl");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_klpl");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -163,7 +195,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_pencemaran_air']['error'] > 0) {
@@ -174,7 +206,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -182,7 +214,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -197,20 +230,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_laporan_pencemaran_air");
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_air");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_air");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -224,7 +271,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_pencemaran_udara']['error'] > 0) {
@@ -235,7 +282,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -243,7 +290,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -260,18 +308,34 @@ class SendReport extends CI_Controller
 
         	$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-            $this->db->insert('document_detail', $data_post);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
+
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -285,7 +349,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_limbah']['error'] > 0) {
@@ -296,7 +360,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -304,7 +368,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -319,20 +384,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_laporan_limbah");
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_limbah");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_limbah");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -346,7 +425,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_dampak']['error'] > 0) {
@@ -357,7 +436,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -365,7 +444,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -380,20 +460,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_laporan_dampak");
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_dampak");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_dampak");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -407,7 +501,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_laporan_ijin']['error'] > 0) {
@@ -418,7 +512,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -426,7 +520,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -441,20 +536,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_laporan_ijin");
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_laporan_ijin");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_laporan_ijin");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';
@@ -468,7 +577,7 @@ class SendReport extends CI_Controller
 		$errors = [];
         $data = [];
 
-		$company_id 	= $this->input->post('company_id');
+		$company_id 	= $this->session->userdata('company_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
 		if($_FILES['file_dokumentasi']['error'] > 0) {
@@ -479,7 +588,7 @@ class SendReport extends CI_Controller
             $data['success'] = false;
             $data['errors'] = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_status'=>1])->get('document')->row();
+        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
 
 			if(!$doc_exist) {
 				$doc_folder = $company_id.date('ymds');
@@ -487,7 +596,8 @@ class SendReport extends CI_Controller
 				$this->db->set('company_id', $company_id);
 				$this->db->set('doc_folder', $doc_folder);
 				$this->db->set('doc_status', 1);
-				// $this->db->set('doc_created_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_active', 1);
+				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
 				$this->db->insert('document');
 
 				$doc_id = $this->db->insert_id();
@@ -502,20 +612,34 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-        	$doc_file = $this->upload_file($location, "file_dokumentasi");
+        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
 
-        	$data_post = array(
-				'company_id'		=> $company_id,
-				'doc_id'			=> $doc_id,
-				'file_type_id'		=> $file_type_id,
-				'doc_folder'		=> $doc_folder,
-				'doc_file'			=> $doc_file,
-				'doc_status'		=> 1,
-				'doc_modified_by'	=> 1,
-				'doc_modified_at'	=> date('Y-m-d H:i:s')
-			);
+			if($revision) {
+				$location = FCPATH."/reports/".$revision->doc_folder;
+				$doc_file = $this->upload_file($location, "file_dokumentasi");
 
-            $this->db->insert('document_detail', $data_post);
+				$this->db->set('doc_file',  $doc_file);
+				$this->db->set('doc_status', 2);
+				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
+				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			} else {
+				$doc_file = $this->upload_file($location, "file_dokumentasi");
+
+	        	$data_post = array(
+					'company_id'		=> $company_id,
+					'doc_id'			=> $doc_id,
+					'file_type_id'		=> $file_type_id,
+					'doc_folder'		=> $doc_folder,
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 1,
+					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_at'	=> date('Y-m-d H:i:s')
+				);
+
+            	$this->db->insert('document_detail', $data_post);
+            }
 
             $data['success'] = true;
             $data['message'] = 'Success!';

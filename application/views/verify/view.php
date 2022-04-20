@@ -27,7 +27,12 @@
                 <tr>
                   <td><?php echo $key + 1 ?></td>
                   <td><?php echo $value['file_type_desc'] ?></td>
-                  <td><span class="badge bg-<?php echo $value['status_color'] ?>"><?php echo $value['status_desc'] ?></span></td>
+                  <td>
+                    <span class="badge bg-<?php echo $value['status_color'] ?>"><?php echo $value['status_desc'] ?></span>
+                    <?php if($value['doc_status'] == 4) { ?>
+                      <a href="javascript:void(0)" class="badge bg-info" onclick="lihatCatatan('<?php echo $value['doc_rejected_note'] ?>')">Catatan</a>
+                    <?php } ?>
+                  </td>
                   <td><?php echo $value['doc_modified_at'] ?></td>
                   <td><?php echo $value['doc_verified_at'] ?></td>
                   <td>
@@ -104,7 +109,6 @@
         }
       }
     }).then(function(result) {
-      alert(result.value);
       var data = new FormData($("#form_data")[0]);
 
       data.append('doc_rejected_note', result.value);

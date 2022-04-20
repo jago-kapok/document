@@ -14,6 +14,7 @@ var table = $("table#table_data").DataTable({
   bLengthChange : false,
   serverSide	: true,
   scrollX		: true,
+  order: [5, 'desc'],
   ajax	: {
 	url	: "<?= base_url('verify/getData'); ?>",
 	type: "GET"
