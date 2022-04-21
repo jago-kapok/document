@@ -11,7 +11,6 @@ class Profile extends CI_Controller
 
 	public function index()
     {
-    	$this->session->set_userdata('company_id', 8);
     	$id = $this->session->userdata('company_id');
 
         $data['title'] = 'Profile Perusahaan';
@@ -84,9 +83,9 @@ class Profile extends CI_Controller
 
 	public function view()
     {
-    	$id = $this->uri->segment(3);
+    	$id = $this->uri->segment(4);
         $data['title'] = 'Profil Perusahaan';
-        $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
+        $data['company'] = $this->db->where('company_id', $this->session->userdata('company_id'))->get('company')->row();
 
         $this->load->view('templates/header', $data);
         $this->load->view('profile/view', $data);
