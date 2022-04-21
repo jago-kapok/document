@@ -16,11 +16,15 @@ class PDF extends FPDF {
 
 		$this->SetX(5);
 		$this->Cell(25, 6, '', 'L', 0, 'C');
-		$this->Cell(175, 6, 'TANDA TERIMA DOKUMEN', 'R', 1, 'C');
+		$this->Cell(175, 6, 'TANDA TERIMA DOKUMEN - SIPP DOKLING', 'R', 1, 'C');
 
 		$this->SetX(5);
 		$this->Cell(25, 6, '', 'L', 0, 'C');
-		$this->Cell(175, 6, 'SISTEM PELAPORAN PENGELOLAAN DOKUMEN LINGKUNGAN (SIPP DOKLING)', 'R', 1, 'C');
+		$this->Cell(175, 6, 'SISTEM INFORMASI PELAPORAN PELAKSANAAN DOKUMEN LINGKUNGAN', 'R', 1, 'C');
+
+		// $this->SetX(5);
+		// $this->Cell(25, 6, '', 'L', 0, 'C');
+		// $this->Cell(175, 6, '( SIPP DOKLING )', 'R', 1, 'C');
 
 		$this->SetX(5);
 		$this->Cell(25, 6, '', 'L', 0, 'C');

@@ -7,7 +7,7 @@
           <span style="color: hsl(218, 81%, 75%); font-size: 80%">Dinas Lingkungan Hidup</span>
         </h1>
         <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-          Sistem Informasi Pengelolaan Pelaporan Dokumen Lingkungan, untuk :
+          Sistem Informasi Pelaporan Pelaksanaan Dokumen Lingkungan, untuk :
           <br>
           - Pelaporan Pelaksanaan RKL-RPL dan UKL-UPL<br>
           - Pelaporan Pengendalian Pencemaran Air<br>
