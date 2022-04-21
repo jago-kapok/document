@@ -22,7 +22,7 @@ class Auth extends CI_Controller
 		$username = $this->input->post('user_name');
 		$password = $this->input->post('user_auth');
 		
-		$user = $this->db->select('user.*, company.company_name as company_name')->where('user_name', $username)->join('company', 'company.company_id = user.company_id')->get('user')->row();
+		$user = $this->db->select('user.*, company.company_name as company_name')->where('user_name', $username)->where('user_status', 1)->join('company', 'company.company_id = user.company_id')->get('user')->row();
 		
 		if(password_verify($password, $user->user_password))
 		{

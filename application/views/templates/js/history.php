@@ -28,7 +28,7 @@ var table = $("table#table_data").DataTable({
     data: "doc_sign_file",
     render: function(data, type, row){
       if(row.doc_status == 3){
-        return '<a href="<?= base_url() ?>prints/doc/' + row.doc_id + '" class="btn btn-success btn-sm" target="_blank"><i class="bi-printer"></i>&nbsp;&nbsp;Cetak Tanda Terima</a>';
+        return '<a href="<?= base_url() ?>prints/pdf/' + row.doc_id + '" class="btn btn-success btn-sm" target="_blank"><i class="bi-printer"></i>&nbsp;&nbsp;Cetak Tanda Terima</a>';
       } else {
         return '-';
       }

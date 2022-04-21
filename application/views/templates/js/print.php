@@ -34,7 +34,7 @@ var table = $("table#table_data").DataTable({
   {
     data: "doc_id",
     render: function(data, type, row){
-      return '<a href="<?= base_url() ?>print/pdf/' + data + '" class="btn btn-info btn-sm">Cetak</a>';
+      return '<a href="<?= base_url() ?>prints/pdf/' + data + '" class="btn btn-info btn-sm" target="_blank">Cetak</a>';
     }
   }
   

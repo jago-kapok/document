@@ -8,28 +8,31 @@ class PDF extends FPDF {
     }
 
     function Header(){
-		$this->SetXY(5,5);
 		$this->SetFont('Arial','B',12);
 
-		$this->Image('./assets/dist/img/logo_full.png', 10, 10, 15);
-		$this->Cell(200, 6, '', 'LRT', 2, 'C');
-		$this->Cell(25, 6, '', 'L', 0, 'C');
-		$this->Cell(175, 6, 'TANDA TERIMA', 'R', 1, 'C');
+		$this->SetXY(5,5);
+		$this->Image('./assets/dist/img/logo_full.png', 10, 10, 14);
+		$this->Cell(200, 6, '', 'LRT', 1, 'C');
 
-		// $this->SetFont('Arial','B',12);
+		$this->SetX(5);
 		$this->Cell(25, 6, '', 'L', 0, 'C');
-		$this->Cell(175, 6, 'SISTEM PELAPORAN PENGELOLAAN DOKUMEN LINGKUNGAN', 'R', 1, 'C');
+		$this->Cell(175, 6, 'TANDA TERIMA DOKUMEN', 'R', 1, 'C');
 
+		$this->SetX(5);
+		$this->Cell(25, 6, '', 'L', 0, 'C');
+		$this->Cell(175, 6, 'SISTEM PELAPORAN PENGELOLAAN DOKUMEN LINGKUNGAN (SIPP DOKLING)', 'R', 1, 'C');
+
+		$this->SetX(5);
 		$this->Cell(25, 6, '', 'L', 0, 'C');
 		$this->Cell(175, 6, 'DINAS LINGKUNGAN HIDUP KABUPATEN BOJONEGORO', 'R', 1, 'C');
+
+		$this->SetX(5);
 		$this->Cell(200, 6, '', 'LRB', 1, 'C');
-		
-		// $this->Line(5, 33, 210, 33);
-		// $this->Line(5, 34, 210, 34);
+
 		$this->Ln();
 	}
 
-	function Footer()
+	function Footer_old()
 	{
 		$this->SetY(-12);
 		$this->SetFont('Arial','I',7);
