@@ -1,4 +1,9 @@
 <!-- Section: Design Block -->
+<style type="text/css">
+  body {
+    overflow:auto;
+}
+</style>
   <div class="container px-4 px-md-5 text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="col-lg-8 offset-md-2 mb-5 mb-lg-0 position-relative">
@@ -44,13 +49,32 @@
                     <input type="text" name="company_business_scale" class="form-control">
                   </div>
                 </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
+                  <span class="text-light"><center><b>LOKASI KEGIATAN</b></center></span>
+                </div>
                 <div class="row mb-3">
-                  <label class="col-md-4 col-form-label">Lokasi Kegiatan <span class="text-danger">*</span></label>
+                  <label class="col-md-4 col-form-label">Alamat Lokasi Kegiatan <span class="text-danger">*</span></label>
                   <div class="col-md-8">
                     <textarea name="company_address" class="form-control" rows="2"></textarea>
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label class="col-md-4 col-form-label">Luas Lahan (m²) <span class="text-danger">*</span></label>
+                  <div class="col-md-8">
+                    <input name="company_land_area" class="form-control">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-md-4 col-form-label">Luas Bangunan (m²) <span class="text-danger">*</span></label>
+                  <div class="col-md-8">
+                    <input name="company_building_area" class="form-control">
+                  </div>
+                </div>
               </div>
+
               <div class="col-md-12">
                 <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
                   <span class="text-light"><center><b>CONTACT PERSON</b></center></span>
@@ -68,6 +92,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-md-12">
                 <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
                   <span class="text-light"><center><b>DOKUMEN - DOKUMEN</b></center></span>

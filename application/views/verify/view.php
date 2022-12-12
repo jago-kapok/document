@@ -8,11 +8,32 @@
   </nav>
 
   <div class="card">
-    <div>
+    <div class="row mb-3">
+      <div class="row ms-0">
+        <label class="col-md-2 col-form-label fw-bold">Nama Perusahaan</label>
+        <label class="col-md-6 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_name ?></label>
+
+        <label class="col-md-2 col-form-label fw-bold">Tahun Pelaporan</label>
+        <label class="col-md-2 col-form-label">:&nbsp;&nbsp;<?php echo $company->doc_year ?></label>
+      </div>
+      <div class="row ms-0">
+        <label class="col-md-2 col-form-label fw-bold">Lokasi Kegiatan</label>
+        <label class="col-md-6 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_office_address ?></label>
+
+        <label class="col-md-2 col-form-label fw-bold">Periode Pelaporan</label>
+        <label class="col-md-2 col-form-label">:&nbsp;&nbsp;Semester <?php echo $company->doc_periode ?></label>
+      </div>
+      <div class="row ms-0">
+        <label class="col-md-2 col-form-label fw-bold">Penanggung Jawab</label>
+        <label class="col-md-4 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_pic ?></label>
+      </div>
+    </div>
+
+    <div class="">
       <div class="row">
         <div class="table-responsive">
           <table class="table table-striped table-hover">
-            <thead>
+            <thead class="bg-secondary text-light">
               <tr>
                 <th>No.</th>
                 <th>Nama Dokumen</th>

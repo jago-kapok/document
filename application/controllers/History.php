@@ -13,6 +13,8 @@ class History extends CI_Controller
     {
         $data['title'] = 'History Pelaporan';
 
+        $data['year'] = $this->db->select('doc_year')->group_by('doc_year')->order_by('doc_year', 'desc')->get('document')->result_array();
+
         $this->load->view('templates/header', $data);
         $this->load->view('history/index', $data);
         $this->load->view('templates/footer');
@@ -32,6 +34,12 @@ class History extends CI_Controller
 		];
 		$_key	= "doc_id";
 		$_coll	= [
+			["db" => "doc_year",		"dt" => "doc_year"],
+			["db" => "doc_periode",		"dt" => "doc_periode",
+				"formatter" => function($data, $row) {
+					return "Semester ".$data;
+				}
+			],
 			["db" => "doc_created_at",	"dt" => "doc_created_at",
 				"formatter" => function($data, $row) {
 					return date('d-m-Y H:i', strtotime($data));

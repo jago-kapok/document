@@ -7,13 +7,17 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('key');
 	    authentication();
+
+        $this->load->library('key');
+        $this->load->model('Documents');
     }
 
     public function index()
     {
         $data['title'] = 'SIPP DOKLING - Kab. Bojonegoro';
+
+        $data['doc'] = $this->Documents->getDocumentAndCompany()->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('admin/index', $data);

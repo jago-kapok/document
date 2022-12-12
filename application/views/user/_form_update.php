@@ -1,7 +1,11 @@
 <div class="container-fluid mt-2">
   <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
+	  	<?php if ($this->session->user_level == 1) { ?>
+	    	<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
+		<?php } else { ?>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>admin/user">Beranda</a></li>
+		<?php } ?>
 	    <li class="breadcrumb-item active" aria-current="page">Manajemen Akun</li>
 	  </ol>
 	</nav>
@@ -14,38 +18,39 @@
 	      	<div class="container-fluid bg-info p-1 mb-3">
 	      		<span class="text-light"><center><b>AKUN SAYA</b></center></span>
 	      	</div>
-	      	<div class="row">
+	      	<div class="row mx-2">
 	      		<div class="col-md-6">
 			        <div class="row mb-3">
-			          <label class="col-md-4 col-form-label">Username / Email <span class="text-danger">*</span></label>
+			          <label class="col-md-5 col-form-label">Username / Email <span class="text-danger">*</span></label>
 			          <div class="col-md-7">
 			            <input id="user_name" type="email" name="user_name" class="form-control" value="<?php echo $user->user_name ?>">
 			            <div class="form-text">Mohon gunakan email aktif untuk username</div>
 			          </div>
 			        </div>
 			        <div class="row mb-3">
-			          <label class="col-md-4 col-form-label">Password</label>
+			          <label class="col-md-5 col-form-label">Password baru</label>
 			          <div class="col-md-7">
-			            <input type="password" class="form-control" value="<?php echo $user->user_password ?>" readonly>
-			          </div>
-			        </div>
-			      </div>
-
-			      <div class="col-md-6">
-			        <div class="row mb-3">
-			          <label class="col-md-4 col-form-label">Password baru</label>
-			          <div class="col-md-8">
 			            <input type="password" name="new_auth" class="form-control">
 			            <div class="form-text">Biarkan kosong jika tidak ingin merubah password</div>
 			          </div>
 			        </div>
 			        <div class="row mb-3">
-			          <label class="col-md-4 col-form-label">Konfirmasi password baru</label>
-			          <div class="col-md-8">
+			          <label class="col-md-5 col-form-label">Konfirmasi password baru</label>
+			          <div class="col-md-7">
 			            <input type="password" name="confirm_auth" class="form-control">
 			            <div class="form-text">Biarkan kosong jika tidak ingin merubah password</div>
 			          </div>
 			        </div>
+			        <!-- <div class="row mb-3">
+			          <label class="col-md-4 col-form-label">Password</label>
+			          <div class="col-md-7">
+			            <input type="password" class="form-control" value="<?php echo $user->user_password ?>" readonly>
+			          </div>
+			        </div> -->
+			      </div>
+
+			      <div class="col-md-6">
+			        
 			      </div>
 			    </div>
 	      </div>

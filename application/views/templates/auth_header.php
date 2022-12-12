@@ -52,6 +52,12 @@
           hsl(218, 41%, 20%) 75%,
           hsl(218, 41%, 19%) 80%,
           transparent 100%);
+      height: 100%;
+
+      /* Center and scale the image nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
     #radius-shape-1 {
@@ -81,8 +87,8 @@
     }
   </style>
 </head>
-<body>
-  <section class="background-radial-gradient overflow-hidden" style="padding-bottom: 10rem">
+<body class="background-radial-gradient">
+  <section style="padding-bottom: 20rem">
   
   <nav class="navbar">
     <div class="container">

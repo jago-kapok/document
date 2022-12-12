@@ -21,9 +21,14 @@ var table = $("table#table_data").DataTable({
   iDisplayLength: 10,
   columns: [
   {data: null,      className: "text-left"},
-  {data: "company_name",  className: "text-left"},
-  {data: "company_address",   className: "text-left"},
-  {data: "company_pic", className: "text-left"},
+  {data: "doc_year",  className: "text-left"},
+  {data: "doc_periode", className: "text-left"},
+  {
+    data: "company_name",
+    render: function(data, type, row){
+      return data + '<br><b>Lokasi Kegiatan : </b>' + row['company_address'] + '<br><b>Penanggung Jawab : </b>' + row['company_pic'];
+    }
+  },
   {
     data: "status_desc",
     render: function(data, type, row){
@@ -50,6 +55,14 @@ var table = $("table#table_data").DataTable({
 
 $('#searching').on('keyup', function(){
   table.search(this.value).draw();
+});
+
+$('#yearFilter').on('change', function() {
+    table.columns(1).search(this.value).draw();
+});
+
+$('#periodeFilter').on('change', function() {
+    table.columns(2).search(this.value).draw();
 });
 
 $('select#pagelength').on('change', function(){

@@ -49,19 +49,37 @@
 	</div>
 </div>
 
-<div class="card" data-aos="fade-in">
-  <table id="table_data" class="table table-bordered table-striped" width="100%">
-		<thead class="bg-secondary text-light" style="background-color: #8b8b8b">
-    	<tr>
-        <th width="200" class="text-center">Nama Perusahaan</th>
-        <th width="200" class="text-center">Deskripsi Kegiatan</th>
-        <th width="200" class="text-center">Laporan RKL-RPL</th>
-        <th width="200" class="text-center">Laporan PPA</th>
-        <th width="200" class="text-center">Laporan PPU</th>
-        <th width="200" class="text-center">Laporan PL</th>
-      </tr>
-    </thead>
-  </table>
+<div class="row">
+	<div class="col-md-8">
+		<div class="card" data-aos="fade-in">
+		  <table id="table_data" class="table table-striped" width="100%">
+				<thead class="bg-info text-light">
+		    	<tr>
+		        <tr>
+							<th>No.</th>
+							<th>Tahun</th>
+							<th>Periode</th>
+			        <th>Informasi Perusahaan</th>
+			        <th>Pilihan</th>
+			      </tr>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	<?php foreach ($doc as $key => $val): ?>
+		    		<tr>
+		    			<td><?= $key + 1 ?></td>
+		    			<td><?= $val['doc_year'] ?></td>
+		    			<td>Semester <?= $val['doc_periode'] ?></td>
+		    			<td><?= $val['company_name'] ?><br><b>Lokasi Kegiatan : </b><?= $val['company_address'] ?></td>
+		    			<td>
+		    				<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success"><i class="bi-check"></i></a>
+		    			</td>
+		    		</tr>
+		    	<?php endforeach; ?>
+		    </tbody>
+		  </table>
+		</div>
+	</div>
 </div>
 </div>
 

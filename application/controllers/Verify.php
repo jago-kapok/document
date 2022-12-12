@@ -13,6 +13,8 @@ class Verify extends CI_Controller
     {
         $data['title'] = 'Verifikasi Laporan';
 
+        $data['year'] = $this->db->select('doc_year')->group_by('doc_year')->order_by('doc_year', 'desc')->get('document')->result_array();
+
         $this->load->view('templates/header', $data);
         $this->load->view('verify/index', $data);
         $this->load->view('templates/footer');
@@ -32,13 +34,19 @@ class Verify extends CI_Controller
 		];
 		$_key	= "doc_id";
 		$_coll	= [
+			["db" => "doc_year",		"dt" => "doc_year"],
+			["db" => "doc_periode",		"dt" => "doc_periode",
+				"formatter" => function($data, $row) {
+					return "Semester ".$data;
+				}
+			],
 			["db" => "company_name",	"dt" => "company_name"],
-			["db" => "company_address",	"dt" => "company_address"],
 			["db" => "company_pic",		"dt" => "company_pic"],
 			["db" => "status_desc",		"dt" => "status_desc"],
 			["db" => "doc_id",			"dt" => "doc_id"],
 
 			["db" => "doc_status",		"dt" => "doc_status"],
+			["db" => "company_address",	"dt" => "company_address"],
 		];
 		
 		$_where	= 'doc_status = 2';
@@ -132,12 +140,14 @@ class Verify extends CI_Controller
 	public function view()
     {
     	$id = $this->uri->segment(3);
-        $data['title'] = 'Verifikasi Laporan';
-        $data['doc'] = $this->db->where('doc_id', $id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
-        				->join('status', 'status.status_id = document_detail.doc_status')
-        				->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
+        $data['title'] 		= 'Verifikasi Laporan';
+        $data['company'] 	= $this->db->where('doc_id', $id)->join('company', 'company.company_id = document.company_id')
+        						->get('document')->row();
+        $data['doc'] 		= $this->db->where('doc_id', $id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
+		        				->join('status', 'status.status_id = document_detail.doc_status')
+		        				->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
 
-        $data['doc_id'] = $id;
+        $data['doc_id'] 	= $id;
 
         $this->load->view('templates/header', $data);
         $this->load->view('verify/view', $data);

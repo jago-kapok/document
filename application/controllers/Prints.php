@@ -15,6 +15,8 @@ class Prints extends CI_Controller
     {
         $data['title'] = 'Cetak Tanda Terima';
 
+        $data['year'] = $this->db->select('doc_year')->group_by('doc_year')->order_by('doc_year', 'desc')->get('document')->result_array();
+
         $this->load->view('templates/header', $data);
         $this->load->view('print/index', $data);
         $this->load->view('templates/footer');
@@ -34,15 +36,21 @@ class Prints extends CI_Controller
 		];
 		$_key	= "doc_id";
 		$_coll	= [
+			["db" => "doc_year",		"dt" => "doc_year"],
+			["db" => "doc_periode",		"dt" => "doc_periode",
+				"formatter" => function($data, $row) {
+					return "Semester ".$data;
+				}
+			],
 			["db" => "company_name",	"dt" => "company_name"],
-			["db" => "company_address",	"dt" => "company_address"],
-			["db" => "company_pic",		"dt" => "company_pic"],
 			["db" => "status_desc",		"dt" => "status_desc"],
 			["db" => "doc_verified_at",	"dt" => "doc_verified_at"],
 			["db" => "doc_id",			"dt" => "doc_id"],
 
 			["db" => "doc_status",		"dt" => "doc_status"],
-			["db" => "status_color",	"dt" => "status_color"],
+			["db" => "status_color",	"dt" => "status_color"],			
+			["db" => "company_address",	"dt" => "company_address"],
+			["db" => "company_pic",		"dt" => "company_pic"],
 		];
 		
 		$_where	= 'doc_status = 3';
@@ -96,10 +104,11 @@ class Prints extends CI_Controller
 		$pdf->Cell(35, 6, ': '.date('d-m-Y', strtotime($row->doc_verified_at)), 'R', 1, '');
 
 		$pdf->Cell(35, 6, ' Lokasi Kegiatan', 'L', 0);
-		$pdf->Cell(165, 6, ': '.$row->company_address, 'R', 1);
-		$pdf->Cell(200, 1, '', 'LRB', 1);
+		$pdf->Cell(95, 6, ': '.$row->company_address, 0, 0);
+		$pdf->Cell(35, 6, ' Periode Laporan', 0, 0, 'L');
+		$pdf->Cell(35, 6, ': Semester '.$row->doc_periode, 'R', 1, '');
 
-		$pdf->Ln();
+		// $pdf->Ln();
 
 		$pdf->SetFillColor(145);
 		$header	= array('No.', 'Jenis Pelaporan Dokumen', 'Tanggal Verifikasi', 'Status Pelaporan');

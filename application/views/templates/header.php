@@ -12,7 +12,6 @@
   <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
   <link rel="icon" type="image/x-icon" href="<?= base_url('assets/') ?>dist/img/logo.png">
-  <!-- <link rel="shortcut icon" href="<?= base_url('assets/') ?>dist/img/icons/icon-48x48.png" /> -->
   
   <!-- Font-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,7 +118,7 @@
           </li>
 
           <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>sendreport">
+            <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
               <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
             </a>
           </li>
@@ -170,6 +169,41 @@
       </div>
     </nav>
 
+    <div class="modal fade" id="modalSendReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="staticBackdropLabel"><b>Periode Pelaporan Dokumen</b></h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3">
+              <label class="col-md-5 col-form-label">Tahun Pelaporan <span class="text-danger">*</span></label>
+              <div class="col-md-7">
+              <select id="doc_year" class="form-select">
+                <option value="<?= date('Y') ?>"><?= date('Y') ?></option>
+                <option value="<?= date('Y') - 1 ?>"><?= date('Y') - 1 ?></option>
+              </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-md-5 col-form-label">Periode Pelaporan<span class="text-danger">*</span></label>
+              <div class="col-md-7">
+              <select id="doc_periode" class="form-select">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+              </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+            <button id="submitPeriode" type="button" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="main">
       <nav class="navbar navbar-expand navbar-light navbar-bg">
         <a class="sidebar-toggle js-sidebar-toggle">
@@ -178,72 +212,6 @@
 
         <div class="navbar-collapse collapse">
           <ul class="navbar-nav navbar-align">
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-                <div class="position-relative">
-                  <i class="align-middle btn-icon" data-feather="bell"></i>
-                  <span class="indicator">4</span>
-                </div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-                <div class="dropdown-menu-header">
-                  4 New Notifications
-                </div>
-                <div class="list-group">
-                  <a href="#" class="list-group-item">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-2">
-                        <i class="text-danger" data-feather="alert-circle"></i>
-                      </div>
-                      <div class="col-10">
-                        <div class="text-dark">Update completed</div>
-                        <div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
-                        <div class="text-muted small mt-1">30m ago</div>
-                      </div>
-                    </div>
-                  </a>
-                  <a href="#" class="list-group-item">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-2">
-                        <i class="text-warning" data-feather="bell"></i>
-                      </div>
-                      <div class="col-10">
-                        <div class="text-dark">Lorem ipsum</div>
-                        <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
-                        <div class="text-muted small mt-1">2h ago</div>
-                      </div>
-                    </div>
-                  </a>
-                  <a href="#" class="list-group-item">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-2">
-                        <i class="text-primary" data-feather="home"></i>
-                      </div>
-                      <div class="col-10">
-                        <div class="text-dark">Login from 192.186.1.8</div>
-                        <div class="text-muted small mt-1">5h ago</div>
-                      </div>
-                    </div>
-                  </a>
-                  <a href="#" class="list-group-item">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-2">
-                        <i class="text-success" data-feather="user-plus"></i>
-                      </div>
-                      <div class="col-10">
-                        <div class="text-dark">New connection</div>
-                        <div class="text-muted small mt-1">Christina accepted your request.</div>
-                        <div class="text-muted small mt-1">14h ago</div>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="dropdown-menu-footer">
-                  <a href="#" class="text-muted">Show all notifications</a>
-                </div>
-              </div>
-            </li>
- -->
             <li class="nav-item dropdown">
               <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                 <i class="align-middle" data-feather="settings"></i>

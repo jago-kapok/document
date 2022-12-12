@@ -26,6 +26,8 @@ class Register extends CI_Controller
         $company_business       = $this->input->post('company_business');
         $company_business_scale = $this->input->post('company_business_scale');
         $company_license_env    = $this->input->post('company_license_env');
+        $company_land_area      = $this->input->post('company_land_area');
+        $company_building_area  = $this->input->post('company_building_area');
 
         $auth_email     = $this->input->post('auth_email');
         $auth_pass      = $this->input->post('auth_pass');
@@ -74,6 +76,8 @@ class Register extends CI_Controller
                 'company_business'          => $company_business,
                 'company_business_scale'    => $company_business_scale,
                 'company_license_env'       => $company_license_env,
+                'company_land_area'         => $company_land_area,
+                'company_building_area'     => $company_building_area,
                 'company_organitation_file' => $struktur_organisasi,
                 'company_license_file'      => $perijinan,
                 'company_folder'            => $company_folder, 

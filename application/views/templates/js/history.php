@@ -14,7 +14,7 @@ var table = $("table#table_data").DataTable({
   bLengthChange : false,
   serverSide	: true,
   scrollX		: true,
-  order : [4, 'desc'],
+  order : [3, 'desc'],
   ajax	: {
 	url	: "<?= base_url('history/getData'); ?>",
 	type: "GET"
@@ -22,11 +22,18 @@ var table = $("table#table_data").DataTable({
   iDisplayLength: 10,
   columns: [
 	{data: null,			className: "text-left"},
+	{data: "doc_year",			className: "text-left"},
+	{data: "doc_periode",			className: "text-left"},
 	{data: "doc_created_at",	className: "text-left"},
-	{data: "status_desc",		className: "text-left"},
+  {
+	  data: "status_desc",
+	  render: function(data, type, row) {
+		  return '<span class="badge bg-success">' + data + '</span>';
+	  }
+	},
 	{
     data: "doc_sign_file",
-    render: function(data, type, row){
+    render: function(data, type, row) {
       if(row.doc_status == 3){
         return '<a href="<?= base_url() ?>prints/pdf/' + row.doc_id + '" class="btn btn-success btn-sm" target="_blank"><i class="bi-printer"></i>&nbsp;&nbsp;Cetak Tanda Terima</a>';
       } else {
@@ -52,8 +59,16 @@ var table = $("table#table_data").DataTable({
   }
 });
 
-$('#searching').on('keyup', function(){
+$('#searching').on('keyup', function() {
   table.search(this.value).draw();
+});
+
+$('#yearFilter').on('change', function() {
+    table.columns(1).search(this.value).draw();
+});
+
+$('#periodeFilter').on('change', function() {
+    table.columns(2).search(this.value).draw();
 });
 
 $('select#pagelength').on('change', function(){

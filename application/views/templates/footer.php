@@ -1,12 +1,12 @@
         </div>
       </main>
 
-      <footer class="footer mt-5">
+      <footer class="footer shadow mt-5">
         <div class="container-fluid">
           <div class="row text-muted">
             <div class="col-12 text-start">
               <p class="mb-0">
-                <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Dinas Lingkungan Hidup Kab. Bojonegoro</strong></a> &copy; 2022
+                <a class="text-muted" href="https://dlh.bojonegorokab.go.id/" target="_blank"><strong>Dinas Lingkungan Hidup Kab. Bojonegoro</strong></a> &copy; 2022
               </p>
             </div>
           </div>
@@ -35,8 +35,20 @@
     $(".form-control").attr("autocomplete", "off");
 
     /* ============================ */
+    /* Periode Laporan              
+    /* ============================ */
+
+    $('#submitPeriode').click(function() {
+      var year = $('#doc_year').val();
+      var periode = $('#doc_periode').val();
+
+      window.location.href = "<?= base_url() ?>sendreport?year=" + year + "&periode=" + periode;
+    });
+
+    /* ============================ */
     /* Number Only              
     /* ============================ */
+
     $('.number').keypress(function(event){
       var charCode = event.keyCode
       if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))

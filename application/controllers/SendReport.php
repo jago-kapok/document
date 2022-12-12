@@ -2,658 +2,134 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class SendReport extends CI_Controller
-{	
+{
+	var $user_id;
+
     public function __construct()
     {
         parent::__construct();
 		authentication();
+
+		$this->load->helper('string');
+		$this->load->model('Documents');
+		$this->user_id		= $this->session->userdata('user_id');
+		$this->company_id	= $this->session->userdata('company_id');
     }
 
     public function index()
     {
-    	$company_id = $this->session->userdata('company_id');
-    	$data['company_id'] = $company_id;
+		$year		= $this->input->get('year');
+		$periode	= $this->input->get('periode');
 
-        $data['title'] = 'Pelaporan Dokumen Lingkungan';
-        $data['doc']	= $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
+		if (!$year || !$periode) {
+			show_404();
+		}
 
-        $data['doc1'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>1, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+		$document	= $this->Documents->getDocument($this->company_id, $year, $periode)->row();
+		
+		if (!$document) {
+			$input = array(
+				'company_id'	=> $this->company_id,
+				'doc_folder'	=> $year.$periode.$this->company_id.date('md'),
+				'doc_year'		=> $year,
+				'doc_periode'	=> $periode,
+				'doc_status'	=> 1,
+				'doc_active'	=> 1,
+				'doc_created_by'=> $this->user_id
+			);
 
-        $data['doc2'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>2, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+			$this->db->set($input)->insert('document');
 
-        $data['doc3'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>3, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+			$doc_id 	= $this->db->insert_id();
+			$doc_status	= 1;
+		} else {
+			$doc_id 	= $document->doc_id;
+			$doc_status	= $document->doc_status;
+		}
 
-        $data['doc4'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>4, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
+		$data = array(
+			'title'			=> 'Pelaporan Dokumen Lingkungan',
+			'company_id'	=> $this->company_id,
+			'doc'			=> $this->Documents->getDocumentById($doc_id)->row(),
+			'doc_detail'	=> $this->Documents->getDocumentDetail($doc_id, $doc_status)->result_array(),
+		);
 
-        $data['doc5'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>5, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
-
-        $data['doc6'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>6, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
-
-        $data['doc7'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>7, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
-
-        $data['doc8'] 	= $this->db->select('document_detail.*')->where(['document_detail.company_id'=>$company_id, 'file_type_id'=>8, 'doc_active'=>1])->join('document', 'document.doc_id = document_detail.doc_id')->get('document_detail')->row();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('send-report/index', $data);
-        $this->load->view('templates/footer');
+		$this->load->view('templates/header', $data);
+		$this->load->view('send-report/index', $data);
+		$this->load->view('templates/footer');
     }
 
-	public function doc1()
+	public function store()
 	{
 		$errors = [];
-        $data = [];
+        $data 	= [];
 
-		$company_id 	= $this->session->userdata('company_id');
+		$doc_id			= $this->input->post('doc_id');
 		$file_type_id	= $this->input->post('file_type_id');
 
-		if($_FILES['file_deskripsi_kegiatan']['error'] > 0) {
+		$document		= $this->Documents->getDocumentById($doc_id)->row();
+
+		if($_FILES['file_upload']['error'] > 0) {
             $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
         }
 	 
 		if (!empty($errors)) {
             $data['success'] = false;
-            $data['errors'] = $errors;
+            $data['errors']	 = $errors;
         } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
+        	$location = FCPATH."/reports/".$document->doc_folder;
 
 	        if(!file_exists($location)) {
 	            mkdir($location, 0777);
 	        }
 
-			$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
+			$revision = $this->db->where(['doc_id' => $doc_id, 'file_type_id' => $file_type_id, 'doc_status' => 4])->get('document_detail')->row();
 
-			if($revision) {
+			if ($revision) {
 				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_deskripsi_kegiatan");
+				$doc_file = $this->upload_file($location, "file_upload");
 
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
+				$input = array(
+					'doc_file'			=> $doc_file,
+					'doc_status'		=> 2,
+					'doc_modified_by'	=> $this->user_id,
+					'doc_modified_at'	=> date('Y-m-d H:i:s'),
+					'doc_detail_id'		=> $revision->doc_detail_id
+				);
+				
+				$this->db->set($input)->update('document_detail');
 			} else {
-				$doc_file = $this->upload_file($location, "file_deskripsi_kegiatan");
+				$doc_file = $this->upload_file($location, "file_upload", $file_type_id);
 
-	        	$data_post = array(
-					'company_id'		=> $company_id,
+	        	$input = array(
+					'company_id'		=> $this->company_id,
 					'doc_id'			=> $doc_id,
 					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
+					'doc_folder'		=> $document->doc_folder,
 					'doc_file'			=> $doc_file,
 					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
+					'doc_modified_by'	=> $this->user_id,
 					'doc_modified_at'	=> date('Y-m-d H:i:s')
 				);
 
-            	$this->db->insert('document_detail', $data_post);
+            	$this->db->set($input)->insert('document_detail');
             }
 
+            $data['year'] = $document->doc_year;
+            $data['periode'] = $document->doc_periode;
             $data['success'] = true;
             $data['message'] = 'Success!';
         }
-        
+
         echo json_encode($data);
 	}
 
-	public function doc2()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_klpl']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-			$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_klpl");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_klpl");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc3()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_pencemaran_air']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_air");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_air");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc4()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_pencemaran_udara']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_pencemaran_udara");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc5()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_limbah']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_limbah");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_limbah");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc6()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_dampak']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_dampak");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_dampak");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc7()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_laporan_ijin']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_laporan_ijin");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_laporan_ijin");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-	public function doc8()
-	{
-		$errors = [];
-        $data = [];
-
-		$company_id 	= $this->session->userdata('company_id');
-		$file_type_id	= $this->input->post('file_type_id');
-
-		if($_FILES['file_dokumentasi']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$doc_exist = $this->db->where(['company_id'=>$company_id, 'doc_active'=>1])->get('document')->row();
-
-			if(!$doc_exist) {
-				$doc_folder = $company_id.date('ymds');
-
-				$this->db->set('company_id', $company_id);
-				$this->db->set('doc_folder', $doc_folder);
-				$this->db->set('doc_status', 1);
-				$this->db->set('doc_active', 1);
-				$this->db->set('doc_created_by', $this->session->userdata('user_id'));
-				$this->db->insert('document');
-
-				$doc_id = $this->db->insert_id();
-			} else {
-				$doc_id = $doc_exist->doc_id;
-				$doc_folder = $doc_exist->doc_folder;
-			}
-
-			$location = FCPATH."/reports/".$doc_folder;
-
-	        if(!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$revision = $this->db->where(['doc_id'=>$doc_id, 'file_type_id'=>$file_type_id])->get('document_detail')->row();
-
-			if($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_dokumentasi");
-
-				$this->db->set('doc_file',  $doc_file);
-				$this->db->set('doc_status', 2);
-				$this->db->set('doc_modified_by', $this->session->userdata('user_id'));
-				$this->db->set('doc_modified_at', date('Y-m-d H:i:s'));
-				$this->db->where('doc_detail_id', $revision->doc_detail_id);
-				$this->db->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_dokumentasi");
-
-	        	$data_post = array(
-					'company_id'		=> $company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->session->userdata('user_id'),
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
-
-            	$this->db->insert('document_detail', $data_post);
-            }
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
-        }
-        
-        echo json_encode($data);
-	}
-
-    private function upload_file($location, $file)
+    private function upload_file($location, $file, $file_type_id)
     {
         $config['upload_path']          = $location;
         $config['allowed_types']        = 'pdf';
-        $config['file_name']            = $file.'_'.date("ymds").rand();
-        $config['overwrite']         	= true;
+        $config['file_name']            = $file_type_id.date("ymd").'_'.random_string('alnum', 30);
+        $config['overwrite']         	= false;
         // $config['max_size']          = 2048; // 2MB
 
         $this->load->library('upload', $config);
@@ -665,14 +141,14 @@ class SendReport extends CI_Controller
 
     public function delete_doc()
     {
-    	$id = $this->input->post('doc_detail_id');
+    	$doc_detail_id = $this->input->post('doc_detail_id');
 
-    	$doc_exist = $this->db->where('doc_detail_id', $id)->get('document_detail')->row();
+    	$doc_exist = $this->db->where('doc_detail_id', $doc_detail_id)->get('document_detail')->row();
     	$location = FCPATH."/reports/".$doc_exist->doc_folder."/".$doc_exist->doc_file;
 
     	unlink($location);
 
-        $this->db->delete("document_detail", ["doc_detail_id" => $id]);
+        $this->db->delete("document_detail", ["doc_detail_id" => $doc_detail_id]);
         
         $data['success'] = true;
         $data['message'] = 'Success!';
@@ -681,16 +157,34 @@ class SendReport extends CI_Controller
 
     public function confirm()
     {
-    	$id = $this->input->post('doc_id');
+		$errors = [];
+        $data 	= [];
 
-    	$this->db->set('doc_status', 2);
-    	$this->db->where('doc_id', $id);
-    	$this->db->update('document');
+    	$doc_id = $this->input->post('doc_id');
+		$document = $this->Documents->getDocumentDetail($doc_id, 1)->result_array();
 
-    	$this->db->set('doc_status', 2);
-    	$this->db->where('doc_id', $id);
-    	$this->db->update('document_detail');
-        
+		foreach ($document as $row) {
+			if ($row['doc_file'] === null) {
+				$errors['error_upload'] = 'Mohon lengkapi seluruh dokumen terlebih dahulu !';
+			}
+		}
+
+		if (!empty($errors)) {
+            $data['success'] = false;
+            $data['errors']	 = $errors;
+        } else {
+			$this->db->set('doc_status', 2);
+			$this->db->where('doc_id', $doc_id);
+			$this->db->update('document');
+
+			$this->db->set('doc_status', 2);
+			$this->db->where('doc_id', $doc_id);
+			$this->db->update('document_detail');
+
+            $data['success'] = true;
+            $data['message'] = 'Success!';
+        }
+
         echo json_encode($data);
     }
 }
