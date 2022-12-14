@@ -19,9 +19,13 @@ class Admin extends CI_Controller
 
         $data['doc'] = $this->Documents->getDocumentAndCompany()->result_array();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('admin/index', $data);
-        $this->load->view('templates/footer');
+        if ($this->session->userdata('user_level') == 1) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('admin/index', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->user();
+        }
     }
 
     public function user()

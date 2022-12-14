@@ -64,6 +64,9 @@
               <?php if ($data['file_type_id'] == 1): ?>
                 <br><span class="form-text">Mencakup limbah yang dihasilkan, hasil produksi, dan sampah domestik (perbulan)</span>
               <?php endif; ?>
+              <?php if ($data['doc_status'] == 3): ?>
+                <br><span class="form-text text-danger"><b>Alasan ditolak : </b><?= $data['doc_rejected_note'] ?></span>
+              <?php endif; ?>
             </label>
               <?php
                 if ($data['doc_status'] == 1) {
@@ -77,14 +80,14 @@
                     <div class="ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Lihat Dokumen</a></div>
                   </div>
                 </div>
-              <?php } else if ($data['doc_status'] == 4) { ?>
+              <?php } else if ($data['doc_status'] == 3) { ?>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-success btn-upload" onclick="showModalUpload('<?= $file_type_id ?>', '<?= $file_type_desc ?>', '<?= $doc->doc_id ?>')"><i class="bi-upload"></i>&nbsp;&nbsp;Upload Dokumen</button>
+                  <button type="button" class="btn btn-success btn-upload" onclick="showModalUpload('<?= $file_type_id ?>', '<?= $file_type_desc ?>', '<?= $doc->doc_id ?>')"><i class="bi-upload"></i>&nbsp;&nbsp;Upload Revisi</button>
                 </div>
                 <div class="col-md-3">
                   <div class="d-flex align-items-center text-danger">
                     <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-                    <div class="ms-2"><a href="javascript:void(0)" onclick="lihatCatatan('<?= $doc_rejected_note ?>')">Dokumen Ditolak</a></div>
+                    <div class="text-danger ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Dokumen Ditolak</a></div>
                   </div>
                 </div>
               <?php } else if ($data['doc_status'] == 2) { ?>

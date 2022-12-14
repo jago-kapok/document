@@ -51,7 +51,7 @@ class SendReport extends CI_Controller
 			'title'			=> 'Pelaporan Dokumen Lingkungan',
 			'company_id'	=> $this->company_id,
 			'doc'			=> $this->Documents->getDocumentById($doc_id)->row(),
-			'doc_detail'	=> $this->Documents->getDocumentDetail($doc_id, $doc_status)->result_array(),
+			'doc_detail'	=> $this->Documents->getDocumentDetail($doc_id, 4)->result_array(),
 		);
 
 		$this->load->view('templates/header', $data);
@@ -79,43 +79,34 @@ class SendReport extends CI_Controller
         } else {
         	$location = FCPATH."/reports/".$document->doc_folder;
 
-	        if(!file_exists($location)) {
+	        if (!file_exists($location)) {
 	            mkdir($location, 0777);
 	        }
 
-			$revision = $this->db->where(['doc_id' => $doc_id, 'file_type_id' => $file_type_id, 'doc_status' => 4])->get('document_detail')->row();
+			$revision 	= $this->db->where(['doc_id' => $doc_id, 'file_type_id' => $file_type_id, 'doc_status' => 3])->get('document_detail')->row();
+			$doc_status = (!$revision) ? 1 : 2;
+			$doc_file 	= $this->upload_file($location, "file_upload", $file_type_id);
 
 			if ($revision) {
-				$location = FCPATH."/reports/".$revision->doc_folder;
-				$doc_file = $this->upload_file($location, "file_upload");
+				$this->db->set('doc_status', 4);
+				$this->db->where('doc_detail_id', $revision->doc_detail_id);
+				$this->db->update('document_detail');
+			}
 
-				$input = array(
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 2,
-					'doc_modified_by'	=> $this->user_id,
-					'doc_modified_at'	=> date('Y-m-d H:i:s'),
-					'doc_detail_id'		=> $revision->doc_detail_id
-				);
-				
-				$this->db->set($input)->update('document_detail');
-			} else {
-				$doc_file = $this->upload_file($location, "file_upload", $file_type_id);
+			$input = array(
+				'company_id'		=> $this->company_id,
+				'doc_id'			=> $doc_id,
+				'file_type_id'		=> $file_type_id,
+				'doc_folder'		=> $document->doc_folder,
+				'doc_file'			=> $doc_file,
+				'doc_status'		=> $doc_status,
+				'doc_modified_by'	=> $this->user_id,
+				'doc_modified_at'	=> date('Y-m-d H:i:s')
+			);
 
-	        	$input = array(
-					'company_id'		=> $this->company_id,
-					'doc_id'			=> $doc_id,
-					'file_type_id'		=> $file_type_id,
-					'doc_folder'		=> $document->doc_folder,
-					'doc_file'			=> $doc_file,
-					'doc_status'		=> 1,
-					'doc_modified_by'	=> $this->user_id,
-					'doc_modified_at'	=> date('Y-m-d H:i:s')
-				);
+			$this->db->set($input)->insert('document_detail');
 
-            	$this->db->set($input)->insert('document_detail');
-            }
-
-            $data['year'] = $document->doc_year;
+            $data['year'] 	 = $document->doc_year;
             $data['periode'] = $document->doc_periode;
             $data['success'] = true;
             $data['message'] = 'Success!';

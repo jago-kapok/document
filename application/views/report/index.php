@@ -51,5 +51,4 @@
 		    </thead>
 		  </table>
 	  </div>
-	  <
 </div>

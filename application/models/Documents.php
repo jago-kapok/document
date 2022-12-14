@@ -22,7 +22,7 @@ class Documents extends CI_Model
 	public function getDocumentDetail($doc_id, $doc_status) {
 		$this->db->select('f.file_type_id, f.file_type_desc, dt.doc_id, dt.doc_detail_id, dt.doc_folder, dt.doc_file, dt.doc_status, dt.doc_rejected_note');
 		$this->db->from('file_type f');
-		$this->db->join('document_detail dt', 'dt.file_type_id = f.file_type_id AND dt.doc_id = '.$doc_id.' AND dt.doc_status = '.$doc_status, 'left');
+		$this->db->join('document_detail dt', 'dt.file_type_id = f.file_type_id AND dt.doc_id = '.$doc_id.' AND dt.doc_status != '.$doc_status, 'left');
 		$this->db->order_by('f.file_type_id');
 		
 		return $this->db->get();
