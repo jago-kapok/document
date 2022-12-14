@@ -80,7 +80,7 @@
                     <div class="ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Lihat Dokumen</a></div>
                   </div>
                 </div>
-              <?php } else if ($data['doc_status'] == 3) { ?>
+              <?php } else if ($data['doc_status'] == 4) { ?>
                 <div class="col-md-3">
                   <button type="button" class="btn btn-success btn-upload" onclick="showModalUpload('<?= $file_type_id ?>', '<?= $file_type_desc ?>', '<?= $doc->doc_id ?>')"><i class="bi-upload"></i>&nbsp;&nbsp;Upload Revisi</button>
                 </div>
@@ -257,6 +257,7 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $.post("<?= base_url() ?>sendreport/confirm", { doc_id: id }, function(data) {
+          console.log(data);
           if (data.success == true) {
             Swal.fire({
               icon: 'success',

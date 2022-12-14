@@ -51,7 +51,7 @@ class SendReport extends CI_Controller
 			'title'			=> 'Pelaporan Dokumen Lingkungan',
 			'company_id'	=> $this->company_id,
 			'doc'			=> $this->Documents->getDocumentById($doc_id)->row(),
-			'doc_detail'	=> $this->Documents->getDocumentDetail($doc_id, 4)->result_array(),
+			'doc_detail'	=> $this->Documents->getDocumentDetail($doc_id, 5)->result_array(),
 		);
 
 		$this->load->view('templates/header', $data);
@@ -83,12 +83,12 @@ class SendReport extends CI_Controller
 	            mkdir($location, 0777);
 	        }
 
-			$revision 	= $this->db->where(['doc_id' => $doc_id, 'file_type_id' => $file_type_id, 'doc_status' => 3])->get('document_detail')->row();
+			$revision 	= $this->db->where(['doc_id' => $doc_id, 'file_type_id' => $file_type_id, 'doc_status' => 4])->get('document_detail')->row();
 			$doc_status = (!$revision) ? 1 : 2;
 			$doc_file 	= $this->upload_file($location, "file_upload", $file_type_id);
 
 			if ($revision) {
-				$this->db->set('doc_status', 4);
+				$this->db->set('doc_status', 5);
 				$this->db->where('doc_detail_id', $revision->doc_detail_id);
 				$this->db->update('document_detail');
 			}
@@ -152,17 +152,18 @@ class SendReport extends CI_Controller
         $data 	= [];
 
     	$doc_id = $this->input->post('doc_id');
-		$document = $this->Documents->getDocumentDetail($doc_id, 1)->result_array();
+		$document = $this->Documents->getDocumentDetail($doc_id, 5)->result_array();
 
 		foreach ($document as $row) {
-			if ($row['doc_file'] === null) {
-				$errors['error_upload'] = 'Mohon lengkapi seluruh dokumen terlebih dahulu !';
+			if ($row['doc_file'] == null) {
+				$errors['error_upload'] = 'Mohon lengkapi seluruh dokumen terlebih dahulu ! ='.$row['doc_detail_id'];
 			}
 		}
 
 		if (!empty($errors)) {
             $data['success'] = false;
             $data['errors']	 = $errors;
+			$data['doc'] = $document;
         } else {
 			$this->db->set('doc_status', 2);
 			$this->db->where('doc_id', $doc_id);
