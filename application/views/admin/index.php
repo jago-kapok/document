@@ -50,7 +50,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 		<div class="card" data-aos="fade-in">
 		  <table id="table_data" class="table table-striped" width="100%">
 				<thead class="bg-info text-light">

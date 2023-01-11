@@ -40,7 +40,7 @@ var table = $("table#table_data").DataTable({
     {
       data: "doc_id",
       render: function(data, type, row){
-        return '<a href="<?= base_url() ?>report/view/' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>';
+        return '<a href="<?= base_url() ?>report/view/' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>&nbsp;<a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="deleteData(' + data + ')"><i class="bi-trash"></i></a>';
       }
     }
   
@@ -61,4 +61,40 @@ $('#searching').on('keyup', function(){
 $('select#pagelength').on('change', function(){
   table.page.len(this.value).draw();
 });
+
+/* Hapus Data Laporan */
+function deleteData(id)
+{
+  Swal.fire({
+    title: 'PERHATIAN !',
+    text: "Anda yakin ingin menghapus data ini ?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya',
+    cancelButtonText: 'Batal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "GET",
+        url: "<?= base_url() ?>report/delete?id=" + id,
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        cache: false,
+      })
+      .done(function (data) {
+        Swal.fire({
+          icon: 'success',
+          title: 'SUCCESS',
+          text: 'Data laporan berhasil dihapus !',
+          showConfirmButton: true
+        }).then((result) => {
+          table.draw();
+        });
+      });
+    }
+  })
+}
 </script>

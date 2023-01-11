@@ -64,7 +64,7 @@
               <?php if ($data['file_type_id'] == 1): ?>
                 <br><span class="form-text">Mencakup limbah yang dihasilkan, hasil produksi, dan sampah domestik (perbulan)</span>
               <?php endif; ?>
-              <?php if ($data['doc_status'] == 3): ?>
+              <?php if ($data['doc_status'] == 4): ?>
                 <br><span class="form-text text-danger"><b>Alasan ditolak : </b><?= $data['doc_rejected_note'] ?></span>
               <?php endif; ?>
             </label>

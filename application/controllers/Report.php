@@ -112,4 +112,19 @@ class Report extends CI_Controller
         $this->load->view('report/view', $data);
         $this->load->view('templates/footer');
     }
+
+	public function delete()
+    {
+    	$id = $this->input->get('id');
+        
+		$this->db->set('company_id', 0);
+		$this->db->set('doc_active', 0);
+		
+		$this->db->where('doc_id', $id)->update('document');
+
+		$data['success'] = true;
+		$data['message'] = 'Success!';
+
+		echo json_encode($data);
+    }
 }
