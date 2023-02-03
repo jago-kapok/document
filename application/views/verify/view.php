@@ -130,31 +130,33 @@
         }
       }
     }).then(function(result) {
-      var data = new FormData($("#form_data")[0]);
+      if (result.isConfirmed == true) {
+        var data = new FormData($("#form_data")[0]);
 
-      data.append('doc_rejected_note', result.value);
+        data.append('doc_rejected_note', result.value);
 
-      $.ajax({
-        type: "POST",
-        url: "<?= base_url() ?>verify/reject",
-        data: data,
-        dataType: "json",
-        cache: false,
-        contentType: false,
-        processData: false,
-      })
-      .done(function (data) {
-        if(data.success == true) {
-          Swal.fire({
-            icon: 'success',
-            title: 'SUCCESS !',
-            text: 'Dokumen berhasil ditolak',
-            showConfirmButton: true
-          }).then(function() {
-            location.reload(true);
-          });
-        }
-      });
+        $.ajax({
+          type: "POST",
+          url: "<?= base_url() ?>verify/reject",
+          data: data,
+          dataType: "json",
+          cache: false,
+          contentType: false,
+          processData: false,
+        })
+        .done(function (data) {
+          if(data.success == true) {
+            Swal.fire({
+              icon: 'success',
+              title: 'SUCCESS !',
+              text: 'Dokumen berhasil ditolak',
+              showConfirmButton: true
+            }).then(function() {
+              location.reload(true);
+            });
+          }
+        });
+      }
     });
   });
 

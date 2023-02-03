@@ -7,6 +7,8 @@ class Report extends CI_Controller
     {
         parent::__construct();
 		authentication();
+
+		$this->load->model('Documents');
     }
 
     public function index()
@@ -101,10 +103,15 @@ class Report extends CI_Controller
         $data['title'] 		= 'Verifikasi Laporan';
         $data['company'] 	= $this->db->where('doc_id', $id)->join('company', 'company.company_id = document.company_id')
         						->get('document')->row();
+
         $data['doc'] 		= $this->db->where('doc_id', $id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
 		        				->join('status', 'status.status_id = document_detail.doc_status')
 		        				->join('user', 'user.user_id = document_detail.doc_verified_by', 'left')
 		        				->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
+
+		$data['doc_history'] = $this->db->where(['doc_id' => $id, 'doc_status' => 5])->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
+								->join('user', 'user.user_id = document_detail.doc_rejected_by', 'left')
+								->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
 
         $data['doc_id'] 	= $id;
 

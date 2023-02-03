@@ -49,7 +49,7 @@
                   <td><?php echo $key + 1 ?></td>
                   <td>
                     <?php echo $value['file_type_desc'] ?>
-                    &nbsp;<a href="<?= base_url() ?>reports/<?php echo $value['doc_folder']; ?>/<?php echo $value['doc_file']; ?>"><i class="bi-folder-symlink"></i></a>
+                    &nbsp;<a href="<?= base_url() ?>reports/<?php echo $value['doc_folder']; ?>/<?php echo $value['doc_file']; ?>" target="_blank"><i class="bi-folder-symlink"></i></a>
                   </td>
                   <td>
                     <span class="badge bg-<?php echo $value['status_color'] ?>"><?php echo $value['status_desc'] ?></span>
@@ -60,6 +60,38 @@
                   <td><?php echo $value['doc_modified_at'] ?></td>
                   <td><?php echo $value['doc_verified_at'] ?></td>
                   <td><?php echo strtoupper($value['user_name']) ?></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <h5><b>Riwayat Dokumen (Revisi)</b></h5>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="bg-secondary text-light">
+              <tr>
+                <th>No.</th>
+                <th>Nama Dokumen</th>
+                <th>Tanggal Submit</th>
+                <th>Tanggal Revisi</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($doc_history as $key => $value) { ?>
+                <tr>
+                  <td><?php echo $key + 1 ?></td>
+                  <td>
+                    <?php echo $value['file_type_desc'] ?>
+                    &nbsp;<a href="<?= base_url() ?>reports/<?php echo $value['doc_folder']; ?>/<?php echo $value['doc_file']; ?>" target="_blank"><i class="bi-folder-symlink"></i></a>
+                  </td>
+                  <td><?php echo $value['doc_modified_at'] ?></td>
+                  <td><?php echo $value['doc_rejected_at'] ?></td>
+                  <td><?php echo $value['doc_rejected_note'] ?></td>
+                  <!-- <td><?php echo strtoupper($value['user_name']) ?></td> -->
                 </tr>
               <?php } ?>
             </tbody>

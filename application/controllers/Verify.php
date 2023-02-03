@@ -99,40 +99,34 @@ class Verify extends CI_Controller
 
 	public function reject()
 	{
-		$doc_id 		= $this->input->post('doc_id');
-		$doc_detail_id	= $this->input->post('doc_detail_id');
-		$doc_rejected_note = $this->input->post('doc_rejected_note');
+		$doc_id 			= $this->input->post('doc_id');
+		$doc_detail_id		= $this->input->post('doc_detail_id');
+		$doc_rejected_note	= $this->input->post('doc_rejected_note');
 	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-			$data_post = array(
-				'doc_rejected_by'	=> $this->session->userdata('user_id'),
-				'doc_rejected_at'	=> date('Y-m-d H:i:s'),
-				'doc_rejected_note'	=> $doc_rejected_note,
-				'doc_status'		=> 4,
-			);
+		$data_post = array(
+			'doc_rejected_by'	=> $this->session->userdata('user_id'),
+			'doc_rejected_at'	=> date('Y-m-d H:i:s'),
+			'doc_rejected_note'	=> $doc_rejected_note,
+			'doc_status'		=> 4,
+		);
 
-        	$this->db->where('doc_detail_id', $doc_detail_id);
-            $this->db->update('document_detail', $data_post);
+		$this->db->where('doc_detail_id', $doc_detail_id);
+		$this->db->update('document_detail', $data_post);
 
-            $check_status = $this->db->where(['doc_id' => $doc_id, 'doc_status' => 2])->get('document_detail')->result_array();
-            
-            if(count($check_status) > 0) {
-            	$data['success'] = true;
-            } else {
-            	$this->db->set('doc_status', 4);
-            	$this->db->set('doc_rejected_by', $this->session->userdata('user_id'));
-            	$this->db->set('doc_rejected_at', date('Y-m-d H:i:s'));
-            	$this->db->where('doc_id', $doc_id);
-            	$this->db->update('document');
+		// $check_status = $this->db->where(['doc_id' => $doc_id, 'doc_status' => 2])->get('document_detail')->result_array();
+		
+		// if (count($check_status) > 0) {
+		// 	$data['success'] = true;
+		// } else {
+		// 	$this->db->set('doc_status', 4);
+		// 	$this->db->where('doc_id', $doc_id);
+		// 	$this->db->update('document');
 
-            	$data['success'] = true;
-            }
+		// 	$data['success'] = true;
+		// }
 
-            $data['message'] = 'Success!';
-        }
+		$data['success'] = true;
+		$data['message'] = 'Success!';
         
         echo json_encode($data);
 	}

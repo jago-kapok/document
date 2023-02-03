@@ -90,6 +90,16 @@
                     <div class="text-danger ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Dokumen Ditolak</a></div>
                   </div>
                 </div>
+              <?php } else if ($data['doc_status'] == 3) { ?>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-info btn-upload" disabled><i class="bi-info-circle"></i>&nbsp;&nbsp;Dok. Terverifikasi</button>
+                </div>
+                <div class="col-md-3">
+                  <div class="d-flex align-items-center text-success">
+                    <div><i class="bi-check-circle" style="font-size: 1.5rem"></i></div>
+                    <div class="ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Lihat Dokumen</a></div>
+                  </div>
+                </div>
               <?php } else if ($data['doc_status'] == 2) { ?>
                 <div class="col-md-3">
                   <button type="button" class="btn btn-primary btn-upload" disabled><i class="bi-info-circle"></i>&nbsp;&nbsp;Dok. Terkirim</button>
