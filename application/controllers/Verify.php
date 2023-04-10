@@ -137,7 +137,7 @@ class Verify extends CI_Controller
         $data['title'] 		= 'Verifikasi Laporan';
         $data['company'] 	= $this->db->where('doc_id', $id)->join('company', 'company.company_id = document.company_id')
         						->get('document')->row();
-        $data['doc'] 		= $this->db->where('doc_id', $id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
+        $data['doc'] 		= $this->db->where(['doc_id' => $id, 'doc_status !=' => 5])->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
 		        				->join('status', 'status.status_id = document_detail.doc_status')
 		        				->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
 
