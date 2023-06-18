@@ -195,7 +195,7 @@
       }
     })
     .fail(function () {
-      $.notify("Terjadi masalah saat koneksi ke server !");
+      $.notify("Mohon periksa inputan dan koneksi jaringan anda");
     });
   });
 </script>

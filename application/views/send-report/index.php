@@ -214,7 +214,7 @@
     .fail(function () {
       Swal.fire({
 	      icon: 'warning',
-	      title: 'Maaf, Terjadi masalah saat koneksi ke server !',
+	      title: 'Mohon periksa file atau koneksi jaringan anda !',
 	      showConfirmButton: true
 	    })
     });

@@ -110,7 +110,7 @@ class Register extends CI_Controller
         $config['allowed_types']        = 'jpg|jpeg|png|pdf';
         $config['file_name']            = 'dokumen_'.date("ymds").rand();
         // $config['overwrite']         = true;
-        $config['max_size']             = 2048; // 2MB
+        // $config['max_size']          = 2048; // 2MB
 
         $this->load->library('upload', $config);
 
