@@ -7,7 +7,6 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-	    authentication();
 
         $this->load->library('key');
         $this->load->model('Documents');
@@ -15,15 +14,16 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'SIPP DOKLING - Kab. Bojonegoro';
-
         $data['doc'] = $this->Documents->getDocumentAndCompany()->result_array();
 
-        if ($this->session->userdata('user_level') == 1) {
+        if (user()->level == 1)
+        {
             $this->load->view('templates/header', $data);
             $this->load->view('admin/index', $data);
             $this->load->view('templates/footer');
-        } else {
+        }
+        else
+        {
             $this->user();
         }
     }
@@ -33,7 +33,6 @@ class Admin extends CI_Controller
         $company_id = $this->session->userdata('company_id');
         $date_now = date('Y-m-d H:i:s');
 
-        $data['title'] = 'SIPP DOKLING - Kab. Bojonegoro';
         $data['doc'] = $this->db->select('document_detail.*, status.*, file_type.*')
                         ->where(['document_detail.company_id'=>$company_id, 'doc_active'=>1])
                         ->or_where(['document_detail.company_id'=>$company_id, 'DATEDIFF("$date_now", document_detail.doc_verified_at) >='=>10])

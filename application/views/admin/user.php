@@ -3,8 +3,8 @@
 		<b><i class="bi-info-circle"></i>&nbsp;&nbsp;Monitoring Status Pelaporan Dokumen Lingkungan</b>
 	</div>
 
-	<div class="row" data-aos="zoom-in">
-		<?php foreach ($doc as $key => $value) { ?>
+	<div class="row mt-4" data-aos="zoom-in">
+		<!-- <?php foreach ($doc as $key => $value) { ?>
 			<div class="col-md-4">
 				<div class="card border-<?php echo $color = $value['doc_status'] == 2 ? 'primary' : $value['status_color'] ?> p-3" style="border: 2px solid">
 					<div class="d-flex justify-content-between mb-1">
@@ -22,6 +22,8 @@
 					</div>
 				</div>
 			</div>
-		<?php } ?>
+		<?php } ?> -->
+		<h6><b>Proses Bisnis Aplikasi SIPPDOKLING</b></h6>
+		<img src="<?= base_url('assets/dist/img/').'flowchart.png' ?>" style="width: 50%">
 	</div>
 </div>

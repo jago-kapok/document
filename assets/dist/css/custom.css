@@ -1,0 +1,42 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #eff3f8;
+    font-size: 85%;
+}
+
+.card {
+    padding: 1rem;
+    border-radius: 7px;
+    box-shadow: 0 3px 5px rgba(0,0,0,.02),0 0 2px rgba(0,0,0,.05),0 1px 4px rgba(0,0,0,.08)!important;
+}
+
+.dataTables_filter {
+    display: none
+}
+    
+tbody, td, tfoot, th, thead, tr {
+    vertical-align: middle
+}
+
+.navbar-light {
+    /*position: fixed;*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.7rem 2rem;
+    background-color: #FFFFFF;
+    transition: left .2s;
+    box-shadow: 0 3px 5px rgb(0 0 0 / 2%), 0 0 2px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 8%);
+}
+
+.btn-icon {
+    margin-top: -4px
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+    margin-top: 10px
+}
+
+.bg-app {
+    background-color: #354f7e
+}

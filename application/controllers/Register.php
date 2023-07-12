@@ -12,7 +12,6 @@ class Register extends CI_Controller
     {
         $this->load->view('templates/auth_header');
         $this->load->view('admin/register');
-        // $this->load->view('templates/footer');
     }
 	
 	public function store()
@@ -29,8 +28,8 @@ class Register extends CI_Controller
         $company_land_area      = $this->input->post('company_land_area');
         $company_building_area  = $this->input->post('company_building_area');
 
-        $auth_email     = $this->input->post('auth_email');
-        $auth_pass      = $this->input->post('auth_pass');
+        $auth_email  = $this->input->post('auth_email');
+        $auth_pass   = $this->input->post('auth_pass');
 
         if($_FILES['struktur_organisasi']['error'] > 0) {
             $errors['erros_message'] = 'Mohon lampirkan struktur organisasi perusahaan anda';
@@ -63,8 +62,8 @@ class Register extends CI_Controller
                 mkdir($location, 0777);
             }
 
-            $struktur_organisasi = $this->upload_file($location, "struktur_organisasi");
-            $perijinan = $this->upload_file($location, "perijinan");
+            $struktur_organisasi = upload_file($location, "struktur_organisasi");
+            $perijinan = upload_file($location, "perijinan");
 
             $data_post = array(
                 'company_name'              => $company_name,
@@ -102,20 +101,5 @@ class Register extends CI_Controller
         }
         
         echo json_encode($data);
-    }
-
-    private function upload_file($location, $file)
-    {
-        $config['upload_path']          = $location;
-        $config['allowed_types']        = 'jpg|jpeg|png|pdf';
-        $config['file_name']            = 'dokumen_'.date("ymds").rand();
-        // $config['overwrite']         = true;
-        $config['max_size']             = 2048; // 2MB
-
-        $this->load->library('upload', $config);
-
-        $this->upload->do_upload($file);
-
-        return $this->upload->data('file_name');
-    }
+    }    
 }

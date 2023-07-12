@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><?php echo $title ?></title>
+  <title>SIPP DOKLING - Kab. Bojonegoro</title>
   <!-- Mobile Specific Metas -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +21,6 @@
   <link rel="canonical" href="https://demo-basic.adminkit.io/" />
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-  <link href="<?= base_url('assets/') ?>dist/css/app.css" rel="stylesheet">
   
   <script src="<?= base_url('assets/'); ?>dist/js/jquery-3.6.0.min.js"></script>
   <script src="<?= base_url('assets/'); ?>dist/js/jquery-chained.min.js"></script>
@@ -37,26 +36,8 @@
   <!-- Charts -->
   <script src="<?= base_url('assets/'); ?>dist/js/apexcharts.js"></script>
 
-  <style>
-    body { font-family: 'Inter', sans-serif; background-color: #eff3f8; font-size: 85%; }
-    .card { padding: 1rem; border-radius: 10px; box-shadow: 0 3px 5px rgba(0,0,0,.02),0 0 2px rgba(0,0,0,.05),0 1px 4px rgba(0,0,0,.08)!important; }
-    .dataTables_filter { display: none }
-    tbody, td, tfoot, th, thead, tr { vertical-align: middle }
-    .navbar-light {
-      /*position: fixed;*/
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 0.7rem 2rem;
-      background-color: #FFFFFF;
-      transition: left .2s;
-      box-shadow: 0 3px 5px rgb(0 0 0 / 2%), 0 0 2px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 8%);
-    }
-    .btn-icon { margin-top: -4px }
-    .input-pagelength { width: 70%!important }
-    div.dataTables_wrapper div.dataTables_paginate { margin-top: 10px }
-    .bg-app { background-color: #354f7e }
-  </style>
+  <link href="<?= base_url('assets/') ?>dist/css/app.css" rel="stylesheet">
+  <link href="<?= base_url('assets/') ?>dist/css/custom.css" rel="stylesheet">
 </head>
 <body>
   <div class="wrapper">
@@ -71,87 +52,97 @@
             Menu Utama
           </li>
 
-          <?php if($this->session->userdata('user_level') == 1) { ?>
+          <?php if (in_array(user()->level, [1])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == '' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>">
+                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == '' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>">
-              <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [1])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>company">
+                <i class="align-middle" data-feather="home"></i> <span class="align-middle">Perusahaan</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>company">
-              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Data Perusahaan</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [1])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>verify">
+                <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Verifikasi Laporan</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>verify">
-              <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Verifikasi Laporan</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [1])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>report">
+                <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Pelaporan</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>report">
-              <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Pelaporan</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [1])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'prints' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>prints">
+                <i class="align-middle" data-feather="printer"></i> <span class="align-middle">Cetak Tanda Terima</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'prints' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>prints">
-              <i class="align-middle" data-feather="printer"></i> <span class="align-middle">Cetak Tanda Terima</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [2])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>admin/user">
+                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <?php } else { ?>
+          <?php if (in_array(user()->level, [2])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>profile/view/<?php echo $this->session->userdata('company_id') ?>">
+                <i class="align-middle" data-feather="home"></i> <span class="align-middle">Profil Perusahaan</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>admin/user">
-              <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [2])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
+                <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>profile/view/<?php echo $this->session->userdata('company_id') ?>">
-              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Profil Perusahaan</span>
-            </a>
-          </li>
-
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
-              <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
-            </a>
-          </li>
-
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'history' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>history">
-              <i class="align-middle" data-feather="file"></i> <span class="align-middle">History Pelaporan</span>
-            </a>
-          </li>
-
-          <?php } ?>
+          <?php if (in_array(user()->level, [2])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'history' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>history">
+                <i class="align-middle" data-feather="file"></i> <span class="align-middle">History Pelaporan</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
           <li class="sidebar-header">
             Pengaturan
           </li>
 
-          <?php if($this->session->userdata('user_level') == 1) { ?>
-          
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>user">
-              <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manajemen User</span>
-            </a>
-          </li>
+          <?php if (in_array(user()->level, [1,2])): ?>          
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>user">
+                <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manajemen User</span>
+              </a>
+            </li>
+          <?php endif; ?>
 
-          <?php } else { ?>
-
-          <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
-            <a class="sidebar-link" href="<?= base_url() ?>user/setting">
-              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Manajemen Akun</span>
-            </a>
-          </li>
-
-          <?php } ?>
+          <?php if (in_array(user()->level, [1,2])): ?>
+            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url() ?>user/setting">
+                <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Manajemen Akun</span>
+              </a>
+            </li>
+          <?php endif; ?>
         </ul>
 
         <div class="sidebar-cta">
@@ -219,7 +210,7 @@
 
               <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
                 <span class="btn-icon" data-feather="user-check"></span>&nbsp;
-                <span class="text-dark"><?php echo $this->session->userdata('company_name') ?></span>&nbsp;
+                <span class="text-dark"><?= user()->username ?></span>&nbsp;
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <a class="dropdown-item" href="<?= base_url() ?>user/setting"><i class="align-middle me-1 btn-icon" data-feather="user"></i> Profil Pengguna</a>

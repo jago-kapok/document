@@ -2,17 +2,17 @@
   <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
 	    <li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-	    <li class="breadcrumb-item"><a href="<?= base_url() ?>company">Data Perusahaan</a></li>
+	    <li class="breadcrumb-item"><a href="<?= base_url('company') ?>">Perusahaan</a></li>
 	    <li class="breadcrumb-item active" aria-current="page">Tambah Data</li>
 	  </ol>
 	</nav>
 
-  <div class="card">
+  <div class="card" data-aos="fade-up">
     <form id="form_data" enctype="multipart/form-data">
 	    <div class="row">
 	      <div class="col-md-12">
-	      	<div class="container-fluid bg-secondary p-1 mb-3">
-	      		<span class="text-light"><center><b>DATA PERUSAHAAN</b></center></span>
+	      	<div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
+	      		<span class="text-light"><b>DATA PERUSAHAAN</b></span>
 	      	</div>
 	        <div class="row mb-3">
 	          <label class="col-md-3 col-form-label">Nama Perusahaan <span class="text-danger">*</span></label>

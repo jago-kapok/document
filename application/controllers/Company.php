@@ -6,25 +6,20 @@ class Company extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-		authentication();
     }
 
     public function index()
     {
-        $data['title'] = 'Data Perusahaan';
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('company/index', $data);
+        $this->load->view('templates/header');
+        $this->load->view('company/index');
         $this->load->view('templates/footer');
 		$this->load->view('templates/js/company');
     }
 
     public function create()
     {
-        $data['title'] = 'Data Perusahaan';
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('company/_form', $data);
+        $this->load->view('templates/header');
+        $this->load->view('company/_form');
         $this->load->view('templates/footer');
     }
 	

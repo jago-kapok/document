@@ -23,22 +23,22 @@
 			        <div class="row mb-3">
 			          <label class="col-md-5 col-form-label">Username / Email <span class="text-danger">*</span></label>
 			          <div class="col-md-7">
-			            <input id="user_name" type="email" name="user_name" class="form-control" value="<?php echo $user->user_name ?>">
-			            <div class="form-text">Mohon gunakan email aktif untuk username</div>
+			            <input id="user_name" type="email" name="user_name" class="form-control" value="<?php echo $user->user_name ?>" readonly>
+			            <div class="form-text text-danger">Mohon gunakan email aktif untuk username</div>
 			          </div>
 			        </div>
 			        <div class="row mb-3">
 			          <label class="col-md-5 col-form-label">Password baru</label>
 			          <div class="col-md-7">
 			            <input type="password" name="new_auth" class="form-control">
-			            <div class="form-text">Biarkan kosong jika tidak ingin merubah password</div>
+			            <div class="form-text text-danger">Biarkan kosong jika tidak ingin merubah password</div>
 			          </div>
 			        </div>
 			        <div class="row mb-3">
 			          <label class="col-md-5 col-form-label">Konfirmasi password baru</label>
 			          <div class="col-md-7">
 			            <input type="password" name="confirm_auth" class="form-control">
-			            <div class="form-text">Biarkan kosong jika tidak ingin merubah password</div>
+			            <div class="form-text text-danger">Biarkan kosong jika tidak ingin merubah password</div>
 			          </div>
 			        </div>
 			        <!-- <div class="row mb-3">

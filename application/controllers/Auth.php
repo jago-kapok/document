@@ -1,66 +1,187 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * Class Auth
+ * @property Ion_auth|Ion_auth_model $ion_auth        The ION Auth spark
+ * @property CI_Form_validation      $form_validation The form validation library
+ */
 
 class Auth extends CI_Controller
 {
-	function __construct(){
-		parent::__construct();
-		$this->load->library('session');
-	}
- 
-	public function index()
-    {
-        $this->load->view('templates/auth_header');
-        $this->load->view('admin/login');
-        // $this->load->view('templates/footer');
-    }
- 
-	function login(){
-		$username = $this->input->post('user_name');
-		$password = $this->input->post('user_auth');
-		
-		$user = $this->db->select('user.*, company.company_name as company_name')->where('user_name', $username)->where('user_status', 1)->join('company', 'company.company_id = user.company_id')->get('user')->row();
-		
-		if(password_verify($password, $user->user_password))
-		{
-			$data_session = array(
-				'user_id'		=> $user->user_id,
-				'company_name'	=> $user->company_name,
-				'user_level'	=> $user->user_level,
-				'user_name'		=> $user->user_name,
-				'user_password'	=> $user->user_password,
-				'company_id'	=> $user->company_id,
-			);
- 
-			$this->session->set_userdata($data_session);
+	public $data = [];
 
-			if($user->user_level == 1) {
-				redirect(base_url(""));
-			} else {
-				redirect(base_url("admin/user"));
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->library(['ion_auth', 'form_validation']);
+		$this->load->database();
+		$this->load->helper(['url', 'language']);
+
+		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+
+		$this->lang->load('auth');
+	}
+
+	/**
+	 * Redirect if needed, otherwise display the user list
+	 */
+	public function index()
+	{
+
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			// redirect them to the home page because they must be an administrator to view this
+			show_error('You must be an administrator to view this page.');
+		}
+		else
+		{
+			$this->data['title'] = $this->lang->line('index_heading');
+			
+			// set the flash data error message if there is one
+			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+			//list the users
+			$this->data['users'] = $this->ion_auth->users()->result();
+			
+			//USAGE NOTE - you can do more complicated queries like this
+			//$this->data['users'] = $this->ion_auth->where('field', 'value')->users()->result();
+			
+			foreach ($this->data['users'] as $k => $user)
+			{
+				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
-		} else {
-			if(!$user->user_name) {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show">Username tidak terdaftar !</div>');
-				
-				redirect(base_url("auth"));
-			} else {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show">Password yang anda masukkan salah !</div>');
-				
-				redirect(base_url("auth"));
-			}
+
+			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'index', $this->data);
 		}
 	}
- 
-	function logout(){
-		$this->session->sess_destroy();
-		session_write_close();
-		
-		$this->session->set_flashdata('message', '<div class="alert alert-info alert-dismissible fade show">Sign out berhasil !<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-		
-		redirect(base_url("auth"));
+
+	/**
+	 * Log the user in
+	 */
+	public function login()
+	{
+		// validate form input
+		$this->form_validation->set_rules('username', 'Username', 'required');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+
+		if ($this->form_validation->run() === TRUE)
+		{
+			// check to see if the user is logging in
+			// check for "remember me"
+			$remember = (bool)$this->input->post('remember');
+
+			if ($this->ion_auth->login($this->input->post('username'), $this->input->post('password'), $remember))
+			{
+				//if the login is successful
+				//redirect them back to the home page
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				redirect('/', 'refresh');
+			}
+			else
+			{
+				// if the login was un-successful
+				// redirect them back to the login page
+				$this->session->set_flashdata('message', $this->ion_auth->errors());
+				redirect('auth/login', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
+			}
+		}
+		else
+		{
+			// the user is not logging in so display the login page
+			// set the flash data error message if there is one
+			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+			$this->data['username'] = [
+				'name' 	=> 'username',
+				'id' 	=> 'username',
+				'type' 	=> 'text',
+				'value' => $this->form_validation->set_value('username'),
+			];
+
+			$this->data['password'] = [
+				'name' 	=> 'password',
+				'id' 	=> 'password',
+				'type' 	=> 'password',
+			];
+
+			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+		}
 	}
+
+	/**
+	 * Log the user out
+	 */
+	public function logout()
+	{
+		$this->data['title'] = "Logout";
+
+		// log the user out
+		$this->ion_auth->logout();
+
+		// redirect them to the login page
+		redirect('auth/login', 'refresh');
+	}
+
+	/**
+	* Redirect a user checking if is admin
+	*/
+	public function redirectUser(){
+		if ($this->ion_auth->is_admin()){
+			redirect('auth', 'refresh');
+		}
+		redirect('/', 'refresh');
+	}
+
+	/**
+	 * @return array A CSRF key-value pair
+	 */
+	public function _get_csrf_nonce()
+	{
+		$this->load->helper('string');
+		$key = random_string('alnum', 8);
+		$value = random_string('alnum', 20);
+		$this->session->set_flashdata('csrfkey', $key);
+		$this->session->set_flashdata('csrfvalue', $value);
+
+		return [$key => $value];
+	}
+
+	/**
+	 * @return bool Whether the posted CSRF token matches
+	 */
+	public function _valid_csrf_nonce(){
+		$csrfkey = $this->input->post($this->session->flashdata('csrfkey'));
+		if ($csrfkey && $csrfkey === $this->session->flashdata('csrfvalue'))
+		{
+			return TRUE;
+		}
+			return FALSE;
+	}
+
+	/**
+	 * @param string     $view
+	 * @param array|null $data
+	 * @param bool       $returnhtml
+	 *
+	 * @return mixed
+	 */
+	public function _render_page($view, $data = NULL, $returnhtml = FALSE)//I think this makes more sense
+	{
+
+		$viewdata = (empty($data)) ? $this->data : $data;
+
+		$view_html = $this->load->view($view, $viewdata, $returnhtml);
+
+		// This will return html on 3rd argument being true
+		if ($returnhtml)
+		{
+			return $view_html;
+		}
+	}
+
 }
