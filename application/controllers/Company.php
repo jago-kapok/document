@@ -65,11 +65,11 @@ class Company extends CI_Controller
 		$company_business_scale	= $this->input->post('company_business_scale');
 		$company_license_env	= $this->input->post('company_license_env');
 
-		if($_FILES['struktur_organisasi']['error'] > 0) {
+		if ($_FILES['struktur_organisasi']['error'] > 0) {
             $errors['error_upload'] = 'Mohon lampirkan struktur organisasi perusahaan anda';
         }
 
-        if($_FILES['perijinan']['error'] > 0) {
+        if ($_FILES['perijinan']['error'] > 0) {
             $errors['error_upload'] = 'Mohon lampirkan dokumen perijinan yang anda miliki';
         }
 	 
@@ -80,12 +80,12 @@ class Company extends CI_Controller
         	$company_folder = date('ymds').rand();
 			$location = FCPATH."/documents/".$company_folder;
 
-	        if(!file_exists($location)) {
+	        if (!file_exists($location)) {
 	            mkdir($location, 0777);
 	        }
 
-        	$struktur_organisasi = $this->upload_file($location, "struktur_organisasi");
-        	$perijinan = $this->upload_file($location, "perijinan");
+        	$struktur_organisasi = upload_file($location, "struktur_organisasi");
+        	$perijinan = upload_file($location, "perijinan");
 
         	$data_post = array(
 				'company_name'				=> $company_name,
@@ -115,7 +115,6 @@ class Company extends CI_Controller
 	public function update()
     {
     	$id = $this->uri->segment(3);
-        $data['title'] = 'Data Perusahaan';
         $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
 
         $this->load->view('templates/header', $data);
@@ -144,16 +143,16 @@ class Company extends CI_Controller
 
         	$location = FCPATH."/documents/".$file_exist->company_folder;
 
-        	if(!$_FILES['struktur_organisasi']['error'] > 0) {
+        	if (!$_FILES['struktur_organisasi']['error'] > 0) {
         		unlink($location.'/'.$file_exist->company_organitation_file);
-	            $struktur_organisasi = $this->upload_file($location, "struktur_organisasi");
+	            $struktur_organisasi = upload_file($location, "struktur_organisasi");
 	        } else {
 	            $struktur_organisasi = $file_exist->company_organitation_file;
 	        }
 
-	        if(!$_FILES['perijinan']['error'] > 0) {
+	        if (!$_FILES['perijinan']['error'] > 0) {
 	        	unlink($location.'/'.$file_exist->company_license_file);
-	            $perijinan = $this->upload_file($location, "perijinan");
+	            $perijinan = upload_file($location, "perijinan");
 	        } else {
 	            $perijinan = $file_exist->company_license_file;
 	        }
@@ -185,7 +184,6 @@ class Company extends CI_Controller
 	public function view()
     {
     	$id = $this->uri->segment(3);
-        $data['title'] = 'Data Perusahaan';
         $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
 
         $this->load->view('templates/header', $data);
@@ -210,20 +208,5 @@ class Company extends CI_Controller
         }
         
         echo json_encode($data);
-    }
-
-    private function upload_file($location, $file)
-    {
-        $config['upload_path']          = $location;
-        $config['allowed_types']        = 'jpg|jpeg|png|pdf';
-        $config['file_name']            = 'dokumen_'.date("ymds").rand();
-        // $config['overwrite']         = true;
-        $config['max_size']             = 2048; // 2MB
-
-        $this->load->library('upload', $config);
-
-        $this->upload->do_upload($file);
-
-        return $this->upload->data('file_name');
     }
 }

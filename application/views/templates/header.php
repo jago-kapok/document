@@ -53,7 +53,7 @@
           </li>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == '' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == '' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>">
                 <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
               </a>
@@ -61,7 +61,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>company">
                 <i class="align-middle" data-feather="home"></i> <span class="align-middle">Perusahaan</span>
               </a>
@@ -69,7 +69,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>verify">
                 <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Verifikasi Laporan</span>
               </a>
@@ -77,7 +77,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>report">
                 <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Pelaporan</span>
               </a>
@@ -85,7 +85,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'prints' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'prints' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>prints">
                 <i class="align-middle" data-feather="printer"></i> <span class="align-middle">Cetak Tanda Terima</span>
               </a>
@@ -93,7 +93,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>admin/user">
                 <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
               </a>
@@ -101,7 +101,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>profile/view/<?php echo $this->session->userdata('company_id') ?>">
                 <i class="align-middle" data-feather="home"></i> <span class="align-middle">Profil Perusahaan</span>
               </a>
@@ -109,7 +109,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
               <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
                 <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
               </a>
@@ -117,7 +117,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'history' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'history' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>history">
                 <i class="align-middle" data-feather="file"></i> <span class="align-middle">History Pelaporan</span>
               </a>
@@ -129,7 +129,7 @@
           </li>
 
           <?php if (in_array(user()->level, [1,2])): ?>          
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>user">
                 <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manajemen User</span>
               </a>
@@ -137,7 +137,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1,2])): ?>
-            <li class="sidebar-item <?php echo $active = $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>user/setting">
                 <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Manajemen Akun</span>
               </a>

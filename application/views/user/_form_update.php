@@ -1,18 +1,18 @@
 <div class="container-fluid mt-2">
   <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
-	  	<?php if ($this->session->user_level == 1) { ?>
+	  	<?php if (user()->level == 1): ?>
 	    	<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-		<?php } else { ?>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>admin/user">Beranda</a></li>
-		<?php } ?>
+		<?php else: ?>
+			<li class="breadcrumb-item"><a href="<?= base_url('admin/use') ?>r">Beranda</a></li>
+		<?php endif; ?>
 	    <li class="breadcrumb-item active" aria-current="page">Manajemen Akun</li>
 	  </ol>
 	</nav>
 
   <div class="card">
     <form id="form_data">
-    	<input type="hidden" name="user_id" value="<?php echo $user->user_id ?>">
+    	<input type="hidden" name="id" value="<?= $user->user_id ?>">
 	    <div class="row">
 	      <div class="col-md-12">
 	      	<div class="container-fluid bg-info p-1 mb-3">
@@ -41,12 +41,6 @@
 			            <div class="form-text text-danger">Biarkan kosong jika tidak ingin merubah password</div>
 			          </div>
 			        </div>
-			        <!-- <div class="row mb-3">
-			          <label class="col-md-4 col-form-label">Password</label>
-			          <div class="col-md-7">
-			            <input type="password" class="form-control" value="<?php echo $user->user_password ?>" readonly>
-			          </div>
-			        </div> -->
 			      </div>
 
 			      <div class="col-md-6">

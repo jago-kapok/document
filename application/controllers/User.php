@@ -6,13 +6,12 @@ class User extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-		authentication();
     }
 
     public function index()
     {
         $data['title'] = 'Manajemen Pengguna';
-        $data['level'] = $this->db->get('level')->result_array();
+        $data['level'] = $this->db->get('groups')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('user/index', $data);
@@ -23,7 +22,7 @@ class User extends CI_Controller
 	public function getData()
 	{
 		$this->load->library("datatables_ssp");
-		$_table = "user";
+		$_table = "users";
 		$_conn 	= [
 			"user" 	=> $this->db->username,
 			"pass" 	=> $this->db->password,
@@ -31,17 +30,23 @@ class User extends CI_Controller
 			"host" 	=> $this->db->hostname,
 			"port" 	=> $this->db->port
 		];
-		$_key	= "user_id";
+		$_key	= "id";
 		$_coll	= [
-			["db" => "user_name",	"dt" => "user_name"],
-			["db" => "level_desc",	"dt" => "level_desc"],
+			["db" => "username",	"dt" => "username"],
+			["db" => "email",		"dt" => "email"],
 			["db" => "company_name","dt" => "company_name"],
-			["db" => "user_status",	"dt" => "user_status"],
-			["db" => "user_id",		"dt" => "user_id"],
+			["db" => "id",			"dt" => "level",
+				"formatter" => function($data, $row) {
+					$level = $data == 1 ? 'Administrator' : 'Users';
+					return $level;
+				}
+			],
+			["db" => "active",		"dt" => "active"],
+			["db" => "id",			"dt" => "id"],
 		];
 		
 		$_where	= NULL;
-		$_join	= "JOIN level ON user.user_level = level.level_id JOIN company ON user.company_id = company.company_id";
+		$_join	= "JOIN company ON users.company_id = company.company_id";
 
 		echo json_encode(
 			Datatables_ssp::complex($_GET, $_conn, $_table, $_key, $_coll, $_where, NULL, $_join)
@@ -123,8 +128,7 @@ class User extends CI_Controller
 
     public function setting()
     {
-        $data['title'] = 'Manajemen Akun';
-        $data['user'] = $this->db->where('user_id', $this->session->userdata('user_id'))->get('user')->row();
+        $data['user'] = $this->db->where('id', user()->id)->get('users')->row();
 
         $this->load->view('templates/header', $data);
         $this->load->view('user/_form_update', $data);

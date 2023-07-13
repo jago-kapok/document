@@ -28,7 +28,7 @@
 		</div>
 		<div class="table-responsive">
 			<table id="table_data" class="table table-striped" width="100%">
-				<thead class="bg-secondary text-light">
+				<thead class="bg-app text-light">
 					<tr>
 						<th width="5">No.</th>
 						<th width="100">Nama Perusahaan</th>

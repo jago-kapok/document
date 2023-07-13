@@ -1,50 +1,87 @@
 <div class="container-fluid mt-2">
 <div class="row" data-aos="zoom-out">
-	<div class="col-md-4">
-		<div class="card p-4">
-			<div class="d-flex justify-content-between mb-1">
-				<div>
-					<h6 class="text-black-50 mb-2"><strong>Total Laporan Masuk</strong></h6>
-					<h2 class=""><strong>20</strong> <span style="font-size: 1rem">dokumen</span></h2>
+	<div class="col-md-3">
+		<div class="card p-1">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<h5 class="card-title m-0">Semua Pelaporan</h5>
+					</div>
+					<div class="col-auto">
+						<div class="stat bg-primary">
+							<i class="bi-file-earmark-text text-light fs-3"></i>
+						</div>
+					</div>
 				</div>
-
-				<div class="btn card-icon" style="background-color: #d0e1fd">
-					<i class="bi-file-earmark-text text-primary" style="font-size: 30px"></i>
+				<h1>47.482</h1>
+				<div class="mb-0">
+					<span class="badge bg-success"> <i class="mdi mdi-arrow-bottom-right"></i> 2 laporan</span>
+					<span class="text-muted">hari ini</span>
 				</div>
 			</div>
-			<span class="text-muted"></span>
 		</div>
 	</div>
 
-	<div class="col-md-4">
-		<div class="card p-4">
-			<div class="d-flex justify-content-between mb-1">
-				<div>
-					<h6 class="text-black-50 mb-2"><strong>Total Laporan Diverifikasi</strong></h6>
-					<h2 class=""><strong>18</strong> <span style="font-size: 1rem">dokumen</span></h2>
+	<div class="col-md-3">
+		<div class="card p-1">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<h5 class="card-title m-0">Menunggu Verifikasi</h5>
+					</div>
+					<div class="col-auto">
+						<div class="stat bg-warning">
+							<i class="bi-file-earmark-text text-light fs-3"></i>
+						</div>
+					</div>
 				</div>
-
-				<div class="btn card-icon" style="background-color: #80f1af">
-					<i class="bi-file-earmark-check text-success" style="font-size: 30px"></i>
+				<h1>47.482</h1>
+				<div class="mb-0">
+					<span class="text-muted">Sampai hari ini</span>
 				</div>
 			</div>
-			<span class="text-muted"></span>
 		</div>
 	</div>
 
-	<div class="col-md-4">
-		<div class="card p-4">
-			<div class="d-flex justify-content-between mb-1">
-				<div>
-					<h6 class="text-black-50 mb-2"><strong>Total Perusahaan</strong></h6>
-					<h2 class=""><strong>25</strong> <span style="font-size: 1rem">perusahaan</span></h2>
+	<div class="col-md-3">
+		<div class="card p-1">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<h5 class="card-title m-0">Sudah Verifikasi</h5>
+					</div>
+					<div class="col-auto">
+						<div class="stat bg-success">
+							<i class="bi-file-earmark-text text-light fs-3"></i>
+						</div>
+					</div>
 				</div>
-
-				<div class="btn card-icon" style="background-color: #feddc7">
-					<i class="bi-map text-info" style="font-size: 30px"></i>
+				<h1>47.482</h1>
+				<div class="mb-0">
+					<span class="text-muted">Sampai hari ini</span>
 				</div>
 			</div>
-			<span class="text-muted"></span>
+		</div>
+	</div>
+
+	<div class="col-md-3">
+		<div class="card p-1">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<h5 class="card-title m-0">Perusahaan</h5>
+					</div>
+					<div class="col-auto">
+						<div class="stat bg-info">
+							<i class="bi-file-earmark-text text-light fs-3"></i>
+						</div>
+					</div>
+				</div>
+				<h1>47.482</h1>
+				<div class="mb-0">
+					<span class="text-muted">Jumlah perusahaan terdaftar</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -52,32 +89,31 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="card" data-aos="fade-in">
-		  <table id="table_data" class="table table-striped" width="100%">
+			<h5 class="card-title mb-3">Data Laporan Masuk</h5>
+			<table id="table_data" class="table table-striped" width="100%">
 				<thead class="bg-info text-light">
-		    	<tr>
-		        <tr>
-							<th>No.</th>
-							<th>Tahun</th>
-							<th>Periode</th>
-			        <th>Informasi Perusahaan</th>
-			        <th>Pilihan</th>
-			      </tr>
-		      </tr>
-		    </thead>
-		    <tbody>
-		    	<?php foreach ($doc as $key => $val): ?>
-		    		<tr>
-		    			<td><?= $key + 1 ?></td>
-		    			<td><?= $val['doc_year'] ?></td>
-		    			<td>Semester <?= $val['doc_periode'] ?></td>
-		    			<td><?= $val['company_name'] ?><br><b>Lokasi Kegiatan : </b><?= $val['company_address'] ?></td>
-		    			<td>
-		    				<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success"><i class="bi-check"></i></a>
-		    			</td>
-		    		</tr>
-		    	<?php endforeach; ?>
-		    </tbody>
-		  </table>
+					<tr>
+						<th>No.</th>
+						<th>Tahun</th>
+						<th>Periode</th>
+						<th>Informasi Perusahaan</th>
+						<th>Pilihan</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($doc as $key => $val): ?>
+						<tr>
+							<td><?= $key + 1 ?></td>
+							<td><?= $val['doc_year'] ?></td>
+							<td>Semester <?= $val['doc_periode'] ?></td>
+							<td><?= $val['company_name'] ?><br><b>Lokasi Kegiatan : </b><?= $val['company_address'] ?></td>
+							<td>
+								<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success"><i class="bi-check"></i></a>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
