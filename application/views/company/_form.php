@@ -1,5 +1,5 @@
 <div class="container-fluid mt-2">
-  	<nav aria-label="breadcrumb">
+	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
 			<li class="breadcrumb-item"><a href="<?= base_url('company') ?>">Perusahaan</a></li>
@@ -7,9 +7,10 @@
 		</ol>
 	</nav>
 
-    <form id="form_data" class="row" enctype="multipart/form-data">
-	    <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-	      	<div class="card">
+	<div class="card" data-aos="fade-up">
+		<form id="form_data" class="row gx-4" enctype="multipart/form-data">
+			<input type="hidden" name="mode_form" value="Add">
+			<div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
 				<div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
 					<span class="text-light"><b>DATA PERUSAHAAN</b></span>
 				</div>
@@ -39,14 +40,16 @@
 						<input type="text" name="company_business_scale" class="form-control">
 					</div>
 				</div>
-
-				<div class="container-fluid bg-app rounded-3 py-1 px-2 my-3">
+			</div>
+			
+			<div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+				<div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
 					<span class="text-light"><b>LOKASI KEGIATAN</b></span>
 				</div>
 				<div class="row">
 					<div class="col-md-12 mb-3">
 						<label class="form-label">Alamat / Lokasi Kegiatan <span class="text-danger">*</span></label>
-						<textarea name="company_address" class="form-control" rows="1"></textarea>
+						<textarea name="company_address" class="form-control" rows="3"></textarea>
 					</div>
 				</div>
 				<div class="row">
@@ -69,79 +72,21 @@
 						<input type="text" name="company_pic_phone" class="form-control">
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12 mb-3">
+						<label class="form-label">No. Rekomendasi <span class="text-danger">*</span></label>
+						<input type="text" name="company_license_env" class="form-control">
+						<div class="form-text">No. Rekomendasi / Persetujuan Dokumen Lingkungan</div>
+					</div>
+				</div>
 			</div>
-		</div>
+		</form>
 
-		<div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
-			<div class="card">
-				<div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
-					<span class="text-light"><b>DOKUMEN - DOKUMEN</b></span>
-				</div>
-				<div class="row mb-3">
-					<label class="col-md-5 col-form-label">Struktur Organisasi (Bagan) <span class="text-danger">*</span></label>
-					<div class="col-md-7">
-					  <input type="file" name="struktur_organisasi" class="form-control">
-					</div>
-				</div>
-				<div class="row mb-3">
-					<label class="col-md-5 col-form-label">Perijinan yang Dimiliki <span class="text-danger">*</span></label>
-					<div class="col-md-7">
-					  <input type="file" name="perijinan" class="form-control">
-					  <div class="form-text">Jika ada lebih dari satu perijinan, harap dijadikan dalam satu file PDF</div>
-					</div>
-				</div>
-				<div class="row mb-3">
-					<label class="col-md-5 col-form-label">No. Rekomendasi <span class="text-danger">*</span></label>
-					<div class="col-md-7">
-					  <input type="text" name="company_license_env" class="form-control">
-					  <div class="form-text">No. Rekomendasi / Persetujuan Dokumen Lingkungan</div>
-					</div>
-				</div>
-				<hr>
-				<div class="justify-content-start p-0">
-					<button type="submit" class="btn btn-primary"><span class="btn-icon" data-feather="save"></span>&nbsp;&nbsp;Simpan</button>
-					<a href="<?= base_url('company') ?>" class="btn btn-danger ms-1"><span class="btn-icon" data-feather="slash"></span>&nbsp;&nbsp;Kembali</a>
-				</div>
-			</div>
+		<div class="col-md-12 border-top pt-3">
+			<button id="submit_form" type="submit" class="btn btn-primary"><span class="btn-icon" data-feather="save"></span>&nbsp;Simpan</button>
+			<a href="<?= base_url('company') ?>" class="btn btn-danger ms-1">
+				<span class="btn-icon" data-feather="slash"></span>&nbsp;Kembali
+			</a>
 		</div>
-  	</form>
+	</div>
 </div>
-
-<script>
-	$("form").submit(function (event) {
-    event.preventDefault();
-    var data = new FormData($("#form_data")[0]);
-
-    $.ajax({
-      type: "POST",
-      url: "<?= base_url('company/store') ?>",
-      data: data,
-      dataType: "json",
-      enctype: 'multipart/form-data',
-      cache: false,
-			contentType: false,
-			processData: false,
-    })
-    .done(function (data) {
-      if(data.success == true) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Data berhasil disimpan !',
-          showConfirmButton: false,
-          timer: 1500
-        })
-
-        setInterval(() => {
-          window.location = "<?= base_url('company') ?>";
-        }, 1000);
-      } else {
-        $.each(data.errors, function(index, value) {
-          $.notify(value, "error");
-        })
-      }
-    })
-    .fail(function () {
-      $.notify("Terjadi masalah saat koneksi ke server !");
-    });
-  });
-</script>

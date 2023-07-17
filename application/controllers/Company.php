@@ -6,7 +6,13 @@ class Company extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->library('form_validation');
     }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
 
     public function index()
     {
@@ -16,12 +22,51 @@ class Company extends CI_Controller
 		$this->load->view('templates/js/company');
     }
 
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
+
     public function create()
     {
         $this->load->view('templates/header');
         $this->load->view('company/_form');
         $this->load->view('templates/footer');
+		$this->load->view('templates/js/company');
     }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
+
+	public function update()
+    {
+    	$id = $this->uri->segment(3);
+        $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('company/_form_update', $data);
+        $this->load->view('templates/footer');
+        $this->load->view('templates/js/company');
+    }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
+	
+	public function view()
+    {
+    	$id = $this->uri->segment(3);
+        $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('company/view', $data);
+        $this->load->view('templates/footer');
+		$this->load->view('templates/js/company');
+    }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
 	
 	public function getData()
 	{
@@ -52,144 +97,104 @@ class Company extends CI_Controller
 			Datatables_ssp::complex($_GET, $_conn, $_table, $_key, $_coll, $_where, NULL, $_join)
 		);
 	}
+
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
 	
 	public function store()
 	{
-		$company_name			= $this->input->post('company_name');
-		$company_address		= $this->input->post('company_address');
-		$company_office_address	= $this->input->post('company_office_address');
-		$company_phone			= $this->input->post('company_phone');
-		$company_pic			= $this->input->post('company_pic');
-		$company_pic_phone		= $this->input->post('company_pic_phone');
-		$company_business		= $this->input->post('company_business');
-		$company_business_scale	= $this->input->post('company_business_scale');
-		$company_license_env	= $this->input->post('company_license_env');
+		$mode_form  = $this->input->post('mode_form');
+		$company_id = $this->input->post('company_id');
 
-		if ($_FILES['struktur_organisasi']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon lampirkan struktur organisasi perusahaan anda';
-        }
+		$data_post = array(
+			'company_name'				=> $this->input->post('company_name'),
+			'company_address'			=> $this->input->post('company_address'),
+			'company_office_address'	=> $this->input->post('company_office_address'),
+			'company_phone'				=> $this->input->post('company_phone'),
+			'company_pic'				=> $this->input->post('company_pic'),
+			'company_pic_phone'			=> $this->input->post('company_pic_phone'),
+			'company_business'			=> $this->input->post('company_business'),
+			'company_business_scale'	=> $this->input->post('company_business_scale'),
+			'company_license_env'		=> $this->input->post('company_license_env'),
+			'company_folder'			=> date('ymd').rand(),
+			'company_status'			=> 1
+		);
 
-        if ($_FILES['perijinan']['error'] > 0) {
-            $errors['error_upload'] = 'Mohon lampirkan dokumen perijinan yang anda miliki';
-        }
-	 
-		if (!empty($errors)) {
-            $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$company_folder = date('ymds').rand();
-			$location = FCPATH."/documents/".$company_folder;
+		$data_post = $this->security->xss_clean($data_post);
 
-	        if (!file_exists($location)) {
-	            mkdir($location, 0777);
-	        }
-
-        	$struktur_organisasi = upload_file($location, "struktur_organisasi");
-        	$perijinan = upload_file($location, "perijinan");
-
-        	$data_post = array(
-				'company_name'				=> $company_name,
-				'company_address'			=> $company_address,
-				'company_office_address'	=> $company_office_address,
-				'company_phone'				=> $company_phone,
-				'company_pic'				=> $company_pic,
-				'company_pic_phone'			=> $company_pic_phone,
-				'company_business'			=> $company_business,
-				'company_business_scale'	=> $company_business_scale,
-				'company_license_env'		=> $company_license_env,
-				'company_organitation_file'	=> $struktur_organisasi,
-				'company_license_file'		=> $perijinan,
-				'company_folder'			=> $company_folder,	
-				'company_status'			=> 1
-			);
-
-            $this->db->insert('company', $data_post);
-
+        if ($this->rules() == 200)
+        {
+        	switch ($mode_form) {
+        	    case 'Add':
+        	        $this->db->insert('company', $data_post);
+        	        $data['company_id'] = $this->db->insert_id();
+        	        break;
+        	    case 'Edit':
+        	    	$this->db->where('company_id', $company_id);
+        	    	$this->db->update('company', $data_post);
+        	    	$data['company_id'] = $company_id;
+        	    	break;
+        	}            
+            
             $data['success'] = true;
-            $data['message'] = 'Success!';
+            $data['message'] = 'Data berhasil disimpan';
+        }
+        else
+        {
+            $errors = explode("\n", $this->rules());
+
+            foreach ($errors as $key => $val) {
+                $data['errors'][$key] = $val;
+            }
         }
         
         echo json_encode($data);
 	}
 
-	public function update()
-    {
-    	$id = $this->uri->segment(3);
-        $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('company/_form_update', $data);
-        $this->load->view('templates/footer');
-    }
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
 	
-	public function edit()
+	public function upload()
 	{
-		$company_id				= $this->input->post('company_id');
-		$company_name			= $this->input->post('company_name');
-		$company_address		= $this->input->post('company_address');
-		$company_office_address	= $this->input->post('company_office_address');
-		$company_phone			= $this->input->post('company_phone');
-		$company_pic			= $this->input->post('company_pic');
-		$company_pic_phone		= $this->input->post('company_pic_phone');
-		$company_business		= $this->input->post('company_business');
-		$company_business_scale	= $this->input->post('company_business_scale');
-		$company_license_env	= $this->input->post('company_license_env');
+		$errors = [];
+
+		$company_id	= $this->input->post('company_id');
+		$file_title	= $this->input->post('file_title');
+
+		if ($_FILES['file_upload']['error'] > 0) {
+            $errors['error_upload'] = 'Mohon lampirkan file terlebih dahulu !';
+        }
 	 
 		if (!empty($errors)) {
             $data['success'] = false;
-            $data['errors'] = $errors;
-        } else {
-        	$file_exist = $this->db->where('company_id', $company_id)->get('company')->row();
+            $data['errors']  = $errors;
+        }
+        else {
+        	$company  = $this->db->where('company_id', $company_id)->get('company')->row();
+			$location = FCPATH."/documents/".$company->company_folder;
 
-        	$location = FCPATH."/documents/".$file_exist->company_folder;
+	        if (!file_exists($location)) mkdir($location, 0777);
 
-        	if (!$_FILES['struktur_organisasi']['error'] > 0) {
-        		unlink($location.'/'.$file_exist->company_organitation_file);
-	            $struktur_organisasi = upload_file($location, "struktur_organisasi");
-	        } else {
-	            $struktur_organisasi = $file_exist->company_organitation_file;
-	        }
+	        $file_name = upload_file($location, 'file_upload');
 
-	        if (!$_FILES['perijinan']['error'] > 0) {
-	        	unlink($location.'/'.$file_exist->company_license_file);
-	            $perijinan = upload_file($location, "perijinan");
-	        } else {
-	            $perijinan = $file_exist->company_license_file;
-	        }
-		
-			$data_post = array(
-				'company_name'				=> $company_name,
-				'company_address'			=> $company_address,
-				'company_office_address'	=> $company_office_address,
-				'company_phone'				=> $company_phone,
-				'company_pic'				=> $company_pic,
-				'company_pic_phone'			=> $company_pic_phone,
-				'company_business'			=> $company_business,
-				'company_business_scale'	=> $company_business_scale,
-				'company_license_env'		=> $company_license_env,
-				'company_organitation_file'	=> $struktur_organisasi,
-				'company_license_file'		=> $perijinan
-			);
+			$this->db->set($file_title, $file_name);
+			$this->db->where('company_id', $company_id);
+			$this->db->update('company');
 
-        	$this->db->where('company_id', $company_id);
-            $this->db->update('company', $data_post);
-
-            $data['success'] = true;
-            $data['message'] = 'Success!';
+            $data['success']	= true;
+            $data['message']	= 'Dokumen berhasil diupload !';
+            $data['company_id']	= $company_id;
         }
         
         echo json_encode($data);
 	}
 
-	public function view()
-    {
-    	$id = $this->uri->segment(3);
-        $data['company'] = $this->db->where('company_id', $id)->get('company')->row();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('company/view', $data);
-        $this->load->view('templates/footer');
-    }
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
 
     public function delete()
     {
@@ -208,5 +213,37 @@ class Company extends CI_Controller
         }
         
         echo json_encode($data);
+    }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
+
+    public function rules()
+    {
+        $this->form_validation->set_error_delimiters('', '');
+
+        $config = [
+            [
+                'field' => 'company_name',
+                'rules' => 'required',
+                'errors'=> [
+                    'required' => 'Nama perusahaan tidak boleh kosong !'
+                ]
+            ],
+        ];
+
+        $this->form_validation->set_rules($config);
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $result = validation_errors();
+        }
+        else
+        {
+            $result = 200;
+        }
+
+        return $result;
     }
 }

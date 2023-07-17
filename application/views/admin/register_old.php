@@ -84,44 +84,120 @@
 
           <div class="card bg-glass" data-aos="fade-up">
             <div class="card-body">
-              <form id="form_data" class="row gx-5">
+              <form id="form_data">
                 <center><h4><b>FORM</b> REGISTRASI</h4></center><hr>
 
                 <div class="col-md-6">
-                  <div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
-                    <span class="text-light"><b>DATA PERUSAHAAN</b></span>
+                  <div class="container-fluid bg-app p-1 mb-3">
+                    <span class="text-light"><center><b>DATA PERUSAHAAN</b></center></span>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12 mb-3">
-                      <label class="form-label">Nama Perusahaan <span class="text-danger">*</span></label>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Nama Perusahaan <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
                       <input type="text" name="company_name" class="form-control">
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">Alamat Kantor <span class="text-danger">*</span></label>
-                      <textarea name="company_office_address" class="form-control" rows="3"></textarea>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Alamat Kantor <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <textarea name="company_office_address" class="form-control" rows="2"></textarea>
                     </div>
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">No. Telepon Kantor<span class="text-danger">*</span></label>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">No. Telepon Kantor <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
                       <input type="text" name="company_phone" class="form-control">
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">Bidang Usaha (KBLI) <span class="text-danger">*</span></label>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Bidang Usaha (KBLI) <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
                       <input type="text" name="company_business" class="form-control">
                     </div>
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">Skala Usaha <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Skala Usaha <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
                       <input type="text" name="company_business_scale" class="form-control">
                     </div>
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
-                    <span class="text-light"><b>AKUN PENGGUNA</b></span>
+                <div class="col-md-12">
+                  <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
+                    <span class="text-light"><center><b>LOKASI KEGIATAN</b></center></span>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Alamat Lokasi Kegiatan <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <textarea name="company_address" class="form-control" rows="2"></textarea>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Luas Lahan (m²) <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input name="company_land_area" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Luas Bangunan (m²) <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input name="company_building_area" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
+                    <span class="text-light"><center><b>CONTACT PERSON</b></center></span>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Penanggung Jawab <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input type="text" name="company_pic" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">No. Telepon / Handphone <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input type="text" name="company_pic_phone" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
+                    <span class="text-light"><center><b>DOKUMEN - DOKUMEN</b></center></span>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Struktur Organisasi <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input type="file" name="struktur_organisasi" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">Perijinan yang Dimiliki <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input type="file" name="perijinan" class="form-control">
+                      <div class="form-text">Jika ada lebih dari satu perijinan, harap dijadikan dalam satu file PDF</div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label class="col-md-4 col-form-label">No. Rekomendasi <span class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                      <input type="text" name="company_license_env" class="form-control">
+                      <div class="form-text">No. Rekomendasi / Persetujuan Dokumen Lingkungan</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="container-fluid p-1 mb-3" style="background-color: #354f7e">
+                    <span class="text-light"><center><b>AKUN PENGGUNA</b></center></span>
                   </div>
                   <div class="row mb-3">
                     <label class="col-md-4 col-form-label">Username / Email <span class="text-danger">*</span></label>
@@ -135,11 +211,11 @@
                       <input type="password" name="auth_pass" class="form-control">
                     </div>
                   </div>
-
-                  <button type="submit" class="btn btn-success mt-3 col align-self-end">
-                    <i class="bi-list-check"></i>&nbsp; Registrasi
-                  </button>
                 </div>
+
+                <button type="submit" class="btn btn-success btn-block my-3">
+                  Registrasi
+                </button>
 
                 <!-- Register buttons -->
                 <hr>

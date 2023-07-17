@@ -9,12 +9,12 @@
 	<div class="card" data-aos="fade-up">
 		<div class="row mb-1">
 			<div class="col-auto me-auto">
-				<a href="<?= base_url('company/create') ?>" class="btn btn-primary"><span class="btn-icon"
-						data-feather="plus-square"></span>
-					&nbsp;&nbsp;Tambah Data
+				<a href="<?= base_url('company/create') ?>" class="btn btn-primary">
+					<span class="btn-icon" data-feather="plus-square"></span>
+					&nbsp;Tambah Data
 				</a>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<input id="searching" class="form-control" placeholder="Pencarian Data ...">
 			</div>
 			<div class="col-auto">

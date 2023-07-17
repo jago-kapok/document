@@ -62,7 +62,7 @@
 
           <?php if (in_array(user()->level, [1])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>company">
+              <a class="sidebar-link" href="<?= base_url('company') ?>">
                 <i class="align-middle" data-feather="home"></i> <span class="align-middle">Perusahaan</span>
               </a>
             </li>
@@ -70,7 +70,7 @@
 
           <?php if (in_array(user()->level, [1])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>verify">
+              <a class="sidebar-link" href="<?= base_url('verify') ?>">
                 <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Verifikasi Laporan</span>
               </a>
             </li>
@@ -78,7 +78,7 @@
 
           <?php if (in_array(user()->level, [1])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>report">
+              <a class="sidebar-link" href="<?= base_url('report') ?>">
                 <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Pelaporan</span>
               </a>
             </li>
@@ -86,7 +86,7 @@
 
           <?php if (in_array(user()->level, [1])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'prints' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>prints">
+              <a class="sidebar-link" href="<?= base_url('prints') ?>">
                 <i class="align-middle" data-feather="printer"></i> <span class="align-middle">Cetak Tanda Terima</span>
               </a>
             </li>
@@ -94,7 +94,7 @@
 
           <?php if (in_array(user()->level, [2])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>admin/user">
+              <a class="sidebar-link" href="<?= base_url('admin/user') ?>">
                 <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
               </a>
             </li>
@@ -102,7 +102,7 @@
 
           <?php if (in_array(user()->level, [2])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>profile/view/<?php echo $this->session->userdata('company_id') ?>">
+              <a class="sidebar-link" href="<?= base_url('profile/view/').user()->company_id ?>">
                 <i class="align-middle" data-feather="home"></i> <span class="align-middle">Profil Perusahaan</span>
               </a>
             </li>
@@ -118,7 +118,7 @@
 
           <?php if (in_array(user()->level, [2])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == 'history' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>history">
+              <a class="sidebar-link" href="<?= base_url('history') ?>">
                 <i class="align-middle" data-feather="file"></i> <span class="align-middle">History Pelaporan</span>
               </a>
             </li>
@@ -129,16 +129,16 @@
           </li>
 
           <?php if (in_array(user()->level, [1,2])): ?>          
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>user">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'user' && $this->uri->segment(2) != 'setting' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url('user') ?>">
                 <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manajemen User</span>
               </a>
             </li>
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1,2])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'user' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url() ?>user/setting">
+            <li class="sidebar-item <?= $this->uri->segment(2) == 'setting' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url('user/setting') ?>">
                 <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Manajemen Akun</span>
               </a>
             </li>
@@ -196,7 +196,7 @@
     </div>
 
     <div class="main">
-      <nav class="navbar navbar-expand navbar-light navbar-bg">
+      <nav class="navbar navbar-expand navbar-light navbar-bg px-3">
         <a class="sidebar-toggle js-sidebar-toggle">
           <i class="hamburger align-self-center"></i>
         </a>
@@ -226,4 +226,4 @@
       </nav>
 
       <main class="content p-0">
-        <div class="row px-4 py-2">
+        <div class="row px-3 py-2">

@@ -40,7 +40,7 @@
   <style>
     .background-radial-gradient {
       background-color: hsl(218, 41%, 15%);
-      background-image: radial-gradient(650px circle at 0% 0%,
+      /*background-image: radial-gradient(650px circle at 0% 0%,
           hsl(218, 41%, 35%) 15%,
           hsl(218, 41%, 30%) 35%,
           hsl(218, 41%, 20%) 75%,
@@ -52,12 +52,12 @@
           hsl(218, 41%, 20%) 75%,
           hsl(218, 41%, 19%) 80%,
           transparent 100%);
-      height: 100%;
+      height: 100%;*/
 
       /* Center and scale the image nicely */
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+/*      background-position: center;*/
+/*      background-repeat: no-repeat;*/
+/*      background-size: cover;*/
     }
 
     #radius-shape-1 {
@@ -72,11 +72,11 @@
 
     #radius-shape-2 {
       border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-      bottom: -60px;
-      right: -110px;
+      bottom: -20px;
+      right: -50px;
       width: 300px;
       height: 300px;
-      #background: radial-gradient(#44006b, #ad1fff);
+/*      #background: radial-gradient(#44006b, #ad1fff);*/
       background: radial-gradient(#006b21, #1fffd6);
       overflow: hidden;
     }
@@ -85,14 +85,18 @@
       background-color: hsla(0, 0%, 100%, 0.9) !important;
       backdrop-filter: saturate(200%) blur(25px);
     }
+
+    p {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 
 <body class="background-radial-gradient">
-  <section style="padding-bottom: 20rem">
+  <section>
   
     <nav class="navbar">
-      <div class="container">
+      <div class="row px-5">
         <a class="navbar-brand text-light d-flex align-items-center mx-4" href="<?= base_url() ?>">
           <img src="<?= base_url('assets/') ?>dist/img/logo_full.png" width="40" class="d-inline-block align-text-top">
           <h4 class="ms-4">PEMKAB BOJONEGORO</h4>
@@ -101,7 +105,7 @@
     </nav>
     
     <!-- Section: Design Block -->
-    <div class="container px-4 py-5 mt-5 px-md-5 text-lg-start">
+    <div class="row px-5 py-3 m-0 text-lg-start">
       <div class="row gx-lg-5 align-items-center">
         <div class="col-lg-7 mb-lg-0" style="z-index: 10">
           <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
@@ -128,11 +132,14 @@
               <form action="login" method="POST">
                 <center><h4><b>FORM</b> LOGIN</h4></center><hr>
                 <!-- 2 column grid layout with text inputs for the first and last names -->
-                <?= $this->session->flashdata('message'); ?>
+                <?php if ($this->session->flashdata('message')) { ?>
+                  <div class="alert alert-danger"><?= $this->session->flashdata('message'); ?></div>
+                <?php } ?>
+
                 <div class="row">
                   <div class="col-md-12 mb-3">
                     <div class="form-outline">
-                      <label class="form-label" for="form3Example1">Username / Email</label>
+                      <label class="form-label fw-bold" for="form3Example1">Username / Email</label>
                       <input type="text" name="username" class="form-control" required/>
                     </div>
                   </div>
@@ -140,13 +147,13 @@
 
                 <!-- Email input -->
                 <div class="form-outline mb-3">
-                  <label class="form-label" for="form3Example3">Password</label>
+                  <label class="form-label fw-bold" for="form3Example3">Password</label>
                   <input type="password" name="password" class="form-control" required/>
                 </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-3">
-                  Masuk
+                  <i class="bi-box-arrow-in-right"></i>&nbsp; Masuk
                 </button>
 
                 <!-- Register buttons -->

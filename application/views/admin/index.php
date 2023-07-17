@@ -5,7 +5,8 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col">
-						<h5 class="card-title m-0">Semua Pelaporan</h5>
+						<!-- <h5 class="card-title m-0">Semua Pelaporan</h5> -->
+						<h1>47.482</h1>
 					</div>
 					<div class="col-auto">
 						<div class="stat bg-primary">
@@ -13,10 +14,8 @@
 						</div>
 					</div>
 				</div>
-				<h1>47.482</h1>
-				<div class="mb-0">
-					<span class="badge bg-success"> <i class="mdi mdi-arrow-bottom-right"></i> 2 laporan</span>
-					<span class="text-muted">hari ini</span>
+				<div class="mt-2 mb-0">
+					<span class="text-primary fw-bold">Semua Pelaporan</span>
 				</div>
 			</div>
 		</div>
@@ -27,7 +26,8 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col">
-						<h5 class="card-title m-0">Menunggu Verifikasi</h5>
+						<!-- <h5 class="card-title m-0">Menunggu Verifikasi</h5> -->
+						<h1>47.482</h1>
 					</div>
 					<div class="col-auto">
 						<div class="stat bg-warning">
@@ -35,9 +35,8 @@
 						</div>
 					</div>
 				</div>
-				<h1>47.482</h1>
-				<div class="mb-0">
-					<span class="text-muted">Sampai hari ini</span>
+				<div class="mt-2 mb-0">
+					<span class="text-warning fw-bold">Menunggu Verifikasi</span>
 				</div>
 			</div>
 		</div>
@@ -48,7 +47,8 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col">
-						<h5 class="card-title m-0">Sudah Verifikasi</h5>
+						<!-- <h5 class="card-title m-0">Sudah Verifikasi</h5> -->
+						<h1>47.482</h1>
 					</div>
 					<div class="col-auto">
 						<div class="stat bg-success">
@@ -56,9 +56,8 @@
 						</div>
 					</div>
 				</div>
-				<h1>47.482</h1>
-				<div class="mb-0">
-					<span class="text-muted">Sampai hari ini</span>
+				<div class="mt-2 mb-0">
+					<span class="text-success fw-bold">Sudah Verifikasi</span>
 				</div>
 			</div>
 		</div>
@@ -69,7 +68,8 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col">
-						<h5 class="card-title m-0">Perusahaan</h5>
+						<!-- <h5 class="card-title m-0">Perusahaan</h5> -->
+						<h1>47.482</h1>
 					</div>
 					<div class="col-auto">
 						<div class="stat bg-info">
@@ -77,9 +77,8 @@
 						</div>
 					</div>
 				</div>
-				<h1>47.482</h1>
-				<div class="mb-0">
-					<span class="text-muted">Jumlah perusahaan terdaftar</span>
+				<div class="mt-2 mb-0">
+					<span class="text-info fw-bold">Perusahaan Terdaftar</span>
 				</div>
 			</div>
 		</div>

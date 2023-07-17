@@ -1,7 +1,7 @@
         </div>
       </main>
 
-      <footer class="footer shadow mt-5">
+      <footer class="footer shadow mt-1">
         <div class="container-fluid">
           <div class="row text-muted">
             <div class="col-12 text-start">
