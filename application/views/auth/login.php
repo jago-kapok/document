@@ -17,18 +17,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
   <script src="<?= base_url('assets/'); ?>dist/js/jquery-3.6.0.min.js"></script>
-  <script src="<?= base_url('assets/'); ?>dist/js/jquery-chained.min.js"></script>
-  <script src="<?= base_url('assets/'); ?>dist/js/notify.min.js"></script>
   <script src="<?= base_url('assets/'); ?>dist/js/sweetalert2@11.js"></script>
 
   <!-- AOS -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/aos.css" />
-
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url('assets/'); ?>plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-
-  <!-- Charts -->
-  <script src="<?= base_url('assets/'); ?>dist/js/apexcharts.js"></script>
 
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #eff3f8; font-size: 85% }
@@ -96,8 +88,8 @@
   <section>
   
     <nav class="navbar">
-      <div class="row px-5">
-        <a class="navbar-brand text-light d-flex align-items-center mx-4" href="<?= base_url() ?>">
+      <div class="container p-3">
+        <a class="navbar-brand text-light d-flex align-items-center" href="<?= base_url() ?>">
           <img src="<?= base_url('assets/') ?>dist/img/logo_full.png" width="40" class="d-inline-block align-text-top">
           <h4 class="ms-4">PEMKAB BOJONEGORO</h4>
         </a>
@@ -105,14 +97,14 @@
     </nav>
     
     <!-- Section: Design Block -->
-    <div class="row px-5 py-3 m-0 text-lg-start">
-      <div class="row gx-lg-5 align-items-center">
+    <div class="container py-5 mt-5">
+      <div class="row g-0 justify-content-center align-items-center">
         <div class="col-lg-7 mb-lg-0" style="z-index: 10">
-          <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          <h1 class="my-5 display-4 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
             SIPP DOKLING <br />
             <span style="color: hsl(218, 81%, 75%); font-size: 80%">Dinas Lingkungan Hidup</span>
           </h1>
-          <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+          <p class="mb-4 opacity-70 fs-6" style="color: hsl(218, 81%, 85%)">
             Sistem Informasi Pelaporan Pelaksanaan Dokumen Lingkungan, untuk :
             <br>
             - Pelaporan Pelaksanaan RKL-RPL dan UKL-UPL<br>
@@ -159,7 +151,7 @@
                 <!-- Register buttons -->
                 <hr>
                 <div class="text-center">
-                  <p>Anda belum memiliki akun ? Silakan registrasi terlebih dahulu</p>
+                  <p class="py-3">Anda belum memiliki akun ? Silakan registrasi terlebih dahulu</p>
                   
                   <a href="<?= base_url() ?>register" class="btn btn-success btn-block">
                     Registrasi Akun

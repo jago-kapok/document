@@ -17,19 +17,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
   <script src="<?= base_url('assets/'); ?>dist/js/jquery-3.6.0.min.js"></script>
-  <script src="<?= base_url('assets/'); ?>dist/js/jquery-chained.min.js"></script>
-  <script src="<?= base_url('assets/'); ?>dist/js/notify.min.js"></script>
   <script src="<?= base_url('assets/'); ?>dist/js/sweetalert2@11.js"></script>
 
   <!-- AOS -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/aos.css" />
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/custom.css" />
-
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url('assets/'); ?>plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-
-  <!-- Charts -->
-  <script src="<?= base_url('assets/'); ?>dist/js/apexcharts.js"></script>
 
   <style>
     .background-radial-gradient {
@@ -67,8 +59,8 @@
   <section>
   
     <nav class="navbar">
-      <div class="row px-5">
-        <a class="navbar-brand text-light d-flex align-items-center mx-4" href="<?= base_url() ?>">
+      <div class="container justify-content-center p-3">
+        <a class="navbar-brand text-light d-flex align-items-center" href="<?= base_url() ?>">
           <img src="<?= base_url('assets/') ?>dist/img/logo_full.png" width="40" class="d-inline-block align-text-top">
           <h4 class="ms-4">PEMKAB BOJONEGORO</h4>
         </a>
@@ -76,19 +68,19 @@
     </nav>
 
     <!-- Section: Design Block -->
-    <div class="row px-5 m-0 text-lg-start">
-      <div class="align-items-center mb-5">
-        <div class="mb-5 position-relative">
+    <div class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-8 position-relative">
           <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
           <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
           <div class="card bg-glass" data-aos="fade-up">
             <div class="card-body">
-              <form id="form_data" class="row gx-5">
+              <form id="form_data" class="row">
                 <center><h4><b>FORM</b> REGISTRASI</h4></center><hr>
 
-                <div class="col-md-6">
-                  <div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
+                <div class="col-md-12">
+                  <div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3 text-center">
                     <span class="text-light"><b>DATA PERUSAHAAN</b></span>
                   </div>
                   <div class="row">
@@ -117,10 +109,15 @@
                       <input type="text" name="company_business_scale" class="form-control">
                     </div>
                   </div>
-                </div>
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <label class="form-label">No. Rekomendasi <span class="text-danger">*</span></label>
+                      <input type="text" name="company_license_env" class="form-control">
+                      <div class="form-text">No. Rekomendasi / Persetujuan Dokumen Lingkungan</div>
+                    </div>
+                  </div>
 
-                <div class="col-md-6">
-                  <div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
+                  <div class="container-fluid bg-app rounded-3 py-1 px-2 my-3 text-center">
                     <span class="text-light"><b>AKUN PENGGUNA</b></span>
                   </div>
                   <div class="row mb-3">
@@ -136,9 +133,11 @@
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-success mt-3 col align-self-end">
-                    <i class="bi-list-check"></i>&nbsp; Registrasi
-                  </button>
+                  <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-success my-3 col-auto">
+                      <i class="bi-list-check"></i>&nbsp; Registrasi
+                    </button>
+                  </div>
                 </div>
 
                 <!-- Register buttons -->
@@ -146,7 +145,7 @@
                 <div class="text-center">
                   <p>Sudah memiliki akun ? Silakan masuk ke aplikasi</p>
                   
-                  <a href="<?= base_url() ?>auth" class="btn btn-primary btn-block">
+                  <a href="<?= base_url('auth/login') ?>" class="btn btn-primary btn-block">
                     <i class="bi-box-arrow-in-right"></i>&nbsp;&nbsp;Login
                   </a>
                 </div>
@@ -160,7 +159,7 @@
   <!-- Section: Design Block -->
 
   <!-- AOS -->
-  <script src="<?= base_url('assets/'); ?>dist/js/aos.js"></script>
+  <script src="<?= base_url('assets/dist/js/aos.js'); ?>"></script>
   <script>
     AOS.init({
       delay: 100,
@@ -175,7 +174,7 @@
 
       $.ajax({
         type: "POST",
-        url: "<?= base_url() ?>register/store",
+        url: "<?= base_url('register/store') ?>",
         data: data,
         dataType: "json",
         enctype: 'multipart/form-data',
@@ -185,27 +184,18 @@
       })
       .done(function (data) {
         if(data.success == true) {
-          Swal.fire({
-            icon: 'success',
-            title: 'SELAMAT !',
-            text: 'Akun anda berhasil dibuat !',
-            showConfirmButton: true
-          }).then(function() {
-            window.location = "<?= base_url() ?>auth/login";
+          Swal.fire('SELAMAT !', 'Akun berhasil dibuat !', 'success')
+          .then(function() {
+            window.location = "<?= base_url('auth/login') ?>";
           });
         } else {
           $.each(data.errors, function(index, value) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'PERHATIAN !',
-              text: value,
-              showConfirmButton: true
-            })
+            Swal.fire('PERHATIAN !', value, 'warning');
           })
         }
       })
       .fail(function () {
-        $.notify("Mohon periksa inputan dan koneksi jaringan anda");
+        Swal.fire('ERROR !', 'Mohon periksa inputan dan koneksi jaringan anda', 'error');
       });
     });
   </script>
