@@ -1,11 +1,7 @@
 <div class="container-fluid mt-2">
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<?php if (user()->level == 1): ?>
-				<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-			<?php else: ?>
-				<li class="breadcrumb-item"><a href="<?= base_url('admin/use') ?>r">Beranda</a></li>
-			<?php endif; ?>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
 			<li class="breadcrumb-item active" aria-current="page">Manajemen Akun</li>
 		</ol>
 	</nav>
@@ -13,7 +9,7 @@
 	<div class="row">
 		<form id="form_data" class="col-md-8">
 			<div class="card" data-aos="fade-up" data-aos-delay="200">
-				<div class="container-fluid bg-app rounded-3 py-1 px-2 mb-3">
+				<div class="container-fluid bg-app rounded-2 py-1 px-2 mb-3">
 					<span class="text-light"><b>AKUN SAYA</b></span>
 				</div>
 				

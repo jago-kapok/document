@@ -22,13 +22,9 @@ function user()
 /* 
 /* ========================================================================= */
 
-function authorized()
+function isAdmin()
 {
-    $CI = get_instance();
-
-    $CI->load->library('ion_auth');
-
-    if (!$CI->ion_auth->is_admin())
+    if (user()->level != 1)
     {
         show_404();
     }

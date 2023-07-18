@@ -16,6 +16,8 @@ class Company extends CI_Controller
 
     public function index()
     {
+    	isAdmin();
+
         $this->load->view('templates/header');
         $this->load->view('company/index');
         $this->load->view('templates/footer');
@@ -28,6 +30,8 @@ class Company extends CI_Controller
 
     public function create()
     {
+    	isAdmin();
+    	
         $this->load->view('templates/header');
         $this->load->view('company/_form');
         $this->load->view('templates/footer');

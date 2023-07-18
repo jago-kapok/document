@@ -97,7 +97,7 @@
     </nav>
     
     <!-- Section: Design Block -->
-    <div class="container py-5 mt-5">
+    <div class="container">
       <div class="row g-0 justify-content-center align-items-center">
         <div class="col-lg-7 mb-lg-0" style="z-index: 10">
           <h1 class="my-5 display-4 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">

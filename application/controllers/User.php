@@ -14,7 +14,7 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Manajemen Pengguna';
+    	isAdmin();
         $data['level'] = $this->db->get('groups')->result_array();
 
         $this->load->view('templates/header', $data);

@@ -52,7 +52,7 @@
             Menu Utama
           </li>
 
-          <?php if (in_array(user()->level, [1])): ?>
+          <?php if (in_array(user()->level, [1, 2])): ?>
             <li class="sidebar-item <?= $this->uri->segment(1) == '' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url() ?>">
                 <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
@@ -93,23 +93,15 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'admin' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url('admin/user') ?>">
-                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Beranda</span>
-              </a>
-            </li>
-          <?php endif; ?>
-
-          <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'profile' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url('profile/view/').user()->company_id ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'company' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url('company/view/').user()->company_id ?>">
                 <i class="align-middle" data-feather="home"></i> <span class="align-middle">Profil Perusahaan</span>
               </a>
             </li>
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'sendReport' ? 'active' : '' ?>">
               <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
                 <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
               </a>
@@ -128,7 +120,7 @@
             Pengaturan
           </li>
 
-          <?php if (in_array(user()->level, [1,2])): ?>          
+          <?php if (in_array(user()->level, [1])): ?>          
             <li class="sidebar-item <?= $this->uri->segment(1) == 'user' && $this->uri->segment(2) != 'setting' ? 'active' : '' ?>">
               <a class="sidebar-link" href="<?= base_url('user') ?>">
                 <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manajemen User</span>
@@ -160,7 +152,38 @@
       </div>
     </nav>
 
-    <div class="modal fade" id="modalSendReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="main">
+      <nav class="navbar navbar-expand navbar-light navbar-bg px-3">
+        <a class="sidebar-toggle js-sidebar-toggle">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+        <div class="navbar-collapse collapse">
+          <ul class="navbar-nav navbar-align">
+            <li class="nav-item dropdown">
+              <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+              <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                <span class="btn-icon" data-feather="user-check"></span>&nbsp;
+                <span class="text-dark"><?= user()->username ?></span>&nbsp;
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="<?= base_url() ?>user/setting"><i class="align-middle me-1 btn-icon" data-feather="user"></i> Profil Pengguna</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0)" onclick="aboutApp()"><i class="align-middle me-1 btn-icon" data-feather="info"></i> Tentang Aplikasi</a>
+                <a class="dropdown-item" href="#"><i class="align-middle me-1 btn-icon" data-feather="help-circle"></i> Bantuan</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="<?= base_url() ?>auth/logout"><i class="align-middle me-1 btn-icon" data-feather="log-out"></i> Keluar</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Modal Pelaporan Dokumen -->
+      <div class="modal fade" id="modalSendReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -194,36 +217,7 @@
         </div>
       </div>
     </div>
-
-    <div class="main">
-      <nav class="navbar navbar-expand navbar-light navbar-bg px-3">
-        <a class="sidebar-toggle js-sidebar-toggle">
-          <i class="hamburger align-self-center"></i>
-        </a>
-
-        <div class="navbar-collapse collapse">
-          <ul class="navbar-nav navbar-align">
-            <li class="nav-item dropdown">
-              <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                <i class="align-middle" data-feather="settings"></i>
-              </a>
-
-              <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                <span class="btn-icon" data-feather="user-check"></span>&nbsp;
-                <span class="text-dark"><?= user()->username ?></span>&nbsp;
-              </a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item" href="<?= base_url() ?>user/setting"><i class="align-middle me-1 btn-icon" data-feather="user"></i> Profil Pengguna</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0)" onclick="aboutApp()"><i class="align-middle me-1 btn-icon" data-feather="info"></i> Tentang Aplikasi</a>
-                <a class="dropdown-item" href="#"><i class="align-middle me-1 btn-icon" data-feather="help-circle"></i> Bantuan</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?= base_url() ?>auth/logout"><i class="align-middle me-1 btn-icon" data-feather="log-out"></i> Keluar</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <!-- Modal Pelaporan Dokumen -->
 
       <main class="content p-0">
         <div class="row px-3 py-2">

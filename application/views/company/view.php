@@ -2,8 +2,10 @@
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url('company') ?>">Data Perusahaan</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Lihat Detail</li>
+			<?php if (in_array(user()->level, [1])) { ?>
+				<li class="breadcrumb-item"><a href="<?= base_url('company') ?>">Perusahaan</a></li>
+			<?php } ?>
+			<li class="breadcrumb-item active" aria-current="page">Detail Perusahaan</li>
 		</ol>
 	</nav>
 	<div class="row">

@@ -15,8 +15,8 @@
     </div>
   </div>
 
-  <!-- <script src="<?= base_url('assets/'); ?>dist/js/bootstrap.bundle.min.js"></script> -->
   <script src="<?= base_url('assets/'); ?>dist/js/app.js"></script>
+
   <!-- DataTables -->
   <script src="<?= base_url('assets/'); ?>plugins/datatables/jquery.dataTables.js"></script>
   <script src="<?= base_url('assets/'); ?>plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
@@ -34,6 +34,8 @@
   <script>
     $(".form-control").attr("autocomplete", "off");
 
+    $.notify.defaults({ autoHideDelay: 5000 });
+
     /* ============================ */
     /* Periode Laporan              
     /* ============================ */
@@ -42,7 +44,7 @@
       var year = $('#doc_year').val();
       var periode = $('#doc_periode').val();
 
-      window.location.href = "<?= base_url() ?>sendreport?year=" + year + "&periode=" + periode;
+      window.location.href = "<?= base_url('sendReport') ?>?year=" + year + "&periode=" + periode;
     });
 
     /* ============================ */
@@ -56,69 +58,27 @@
       return true;
     });
 
-    $.notify.defaults({
-      autoHideDelay: 5000
-    });
+    /* ============================ */
+    /* Tentang Aplikasi           
+    /* ============================ */
 
-    /* About App */
-    function aboutApp() {
+    function aboutApp()
+    {
       Swal.fire({
         title: 'SIPP DOKLING v1.0',
-        html: "Dinas Lingkungan Hidup Kab. Bojonegoro &copy; 2022",
-        icon: 'warning',
-        showConfirmButton: true
+        html: 'Dinas Lingkungan Hidup Kab. Bojonegoro &copy; 2022',
+        icon: 'info'
       });
     }
 
-    /* Lihat Catatan Penolakan */
-    function lihatCatatan(note) {
-      Swal.fire({
-        title: 'NOTE !',
-        text: note,
-        icon: 'info',
-        showConfirmButton: true
-      });
+    /* ============================ */
+    /* Lihar Revisi              
+    /* ============================ */
+
+    function lihatCatatan(note)
+    {
+      Swal.fire('NOTE !', note,'info');
     }
-
-    // Penggantian Password
-    $("#form_change_password").submit(function (event) {
-      event.preventDefault();
-      var data = new FormData($("#form_change_password")[0]);
-
-      $.ajax({
-        type: "POST",
-        url: "<?= base_url() ?>admin/changePassword",
-        data: data,
-        dataType: "json",
-        cache       : false,
-        contentType : false,
-        processData : false,
-      })
-      .done(function (data) {
-        $("#ubahPassword").modal('hide');
-
-        if(data.success == true) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Password Berhasil Diubah !',
-            showConfirmButton: false,
-            timer: 1200
-          });
-        } else {
-          $.each(data.errors, function(index, value) {
-            $.notify(value, "error");
-          })
-        }
-      })
-      .fail(function () {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Koneksi Bermasalah !',
-          text: 'Tidak dapat terhubung dengan server.',
-          showConfirmButton: true
-        })
-      });
-    });
   </script>
 </body>
 </html>

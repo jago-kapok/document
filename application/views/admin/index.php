@@ -107,7 +107,9 @@
 							<td>Semester <?= $val['doc_periode'] ?></td>
 							<td><?= $val['company_name'] ?><br><b>Lokasi Kegiatan : </b><?= $val['company_address'] ?></td>
 							<td>
-								<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success"><i class="bi-check"></i></a>
+								<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success">
+									<i class="bi-check-square"></i>&nbsp; Verifikasi
+								</a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
