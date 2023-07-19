@@ -69,17 +69,17 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'verify' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url('verify') ?>">
+            <li class="sidebar-item <?= $this->uri->segment(2) == 'verify' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url('report/verify') ?>">
                 <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Verifikasi Laporan</span>
               </a>
             </li>
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [1])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'report' ? 'active' : '' ?>">
-              <a class="sidebar-link" href="<?= base_url('report') ?>">
-                <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Pelaporan</span>
+            <li class="sidebar-item <?= $this->uri->segment(2) == 'all' ? 'active' : '' ?>">
+              <a class="sidebar-link" href="<?= base_url('report/all') ?>">
+                <i class="align-middle" data-feather="book"></i> <span class="align-middle">Semua Laporan</span>
               </a>
             </li>
           <?php endif; ?>

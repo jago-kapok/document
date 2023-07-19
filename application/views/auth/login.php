@@ -125,7 +125,10 @@
                 <center><h4><b>FORM</b> LOGIN</h4></center><hr>
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <?php if ($this->session->flashdata('message')) { ?>
-                  <div class="alert alert-danger"><?= $this->session->flashdata('message'); ?></div>
+                  <div class="alert alert-danger row mx-0 gx-2">
+                    <i class="bi-info-circle col-auto"></i>&nbsp;
+                    <div class="col-auto"><?= $this->session->flashdata('message'); ?></div>
+                  </div>
                 <?php } ?>
 
                 <div class="row">

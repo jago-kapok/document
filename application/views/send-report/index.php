@@ -13,7 +13,7 @@
   </nav>
   
   <?php if ($doc->doc_status != 1): ?>
-    <div class="alert alert-info" data-aos="fade-up" data-aos-delay="300">
+    <div class="alert alert-info">
       Laporan sudah terkirim ke Dinas Lingkungan Hidup Kab. Bojonegoro. Terima kasih.
     </div>
   <?php else: ?>
@@ -22,7 +22,7 @@
     </div>
   <?php endif; ?>
 
-  <div class="card" data-aos="fade-up" data-aos-delay="400">
+  <div class="card">
     <div id="form_data">
       <div class="row">
         <div class="col-md-12">

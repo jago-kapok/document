@@ -13,8 +13,6 @@ class Prints extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Cetak Tanda Terima';
-
         $data['year'] = $this->db->select('doc_year')->group_by('doc_year')->order_by('doc_year', 'desc')->get('document')->result_array();
 
         $this->load->view('templates/header', $data);

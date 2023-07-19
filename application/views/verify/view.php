@@ -2,30 +2,30 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-      <li class="breadcrumb-item"><a href="<?= base_url() ?>verify">Verifikasi Laporan</a></li>
+      <li class="breadcrumb-item"><a href="<?= base_url('report/verify') ?>">Verifikasi Laporan</a></li>
       <li class="breadcrumb-item active" aria-current="page">Verifikasi</li>
     </ol>
   </nav>
 
   <div class="card">
     <div class="row mb-3">
-      <div class="row ms-0">
-        <label class="col-md-2 col-form-label fw-bold">Nama Perusahaan</label>
-        <label class="col-md-6 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_name ?></label>
+      <div class="row">
+        <label class="col-md-2 form-label">Nama Perusahaan</label>
+        <label class="col-md-6 fw-normal">:&nbsp;&nbsp;<?= $company->company_name ?></label>
 
-        <label class="col-md-2 col-form-label fw-bold">Tahun Pelaporan</label>
-        <label class="col-md-2 col-form-label">:&nbsp;&nbsp;<?php echo $company->doc_year ?></label>
+        <label class="col-md-2 form-label">Tahun Laporan</label>
+        <label class="col-md-2 fw-normal">:&nbsp;&nbsp;<?= $company->doc_year ?></label>
       </div>
-      <div class="row ms-0">
-        <label class="col-md-2 col-form-label fw-bold">Lokasi Kegiatan</label>
-        <label class="col-md-6 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_office_address ?></label>
+      <div class="row">
+        <label class="col-md-2 form-label">Lokasi Kegiatan</label>
+        <label class="col-md-6 fw-normal">:&nbsp;&nbsp;<?= $company->company_office_address ?></label>
 
-        <label class="col-md-2 col-form-label fw-bold">Periode Pelaporan</label>
-        <label class="col-md-2 col-form-label">:&nbsp;&nbsp;Semester <?php echo $company->doc_periode ?></label>
+        <label class="col-md-2 form-label">Periode Laporan</label>
+        <label class="col-md-2 fw-normal">:&nbsp;&nbsp;Semester <?= $company->doc_periode ?></label>
       </div>
-      <div class="row ms-0">
-        <label class="col-md-2 col-form-label fw-bold">Penanggung Jawab</label>
-        <label class="col-md-4 col-form-label">:&nbsp;&nbsp;<?php echo $company->company_pic ?></label>
+      <div class="row">
+        <label class="col-md-2 form-label">Penanggung Jawab</label>
+        <label class="col-md-4 fw-normal">:&nbsp;&nbsp;<?= $company->company_pic ?></label>
       </div>
     </div>
 
@@ -33,35 +33,44 @@
       <div class="row">
         <div class="table-responsive">
           <table class="table table-striped table-hover">
-            <thead class="bg-secondary text-light">
+            <thead class="bg-app text-light">
               <tr>
                 <th>No.</th>
                 <th>Nama Dokumen</th>
                 <th>Status</th>
                 <th>Tanggal Submit</th>
-                <th>Tanggal Verifikasi</th>
                 <th>Pilihan</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($doc as $key => $value) { ?>
                 <tr>
-                  <td><?php echo $key + 1 ?></td>
-                  <td><?php echo $value['file_type_desc'] ?></td>
+                  <td><?= $key + 1 ?></td>
                   <td>
-                    <span class="badge bg-<?php echo $value['status_color'] ?>"><?php echo $value['status_desc'] ?></span>
-                    <?php if($value['doc_status'] == 4) { ?>
-                      <a href="javascript:void(0)" class="badge bg-info" onclick="lihatCatatan('<?php echo $value['doc_rejected_note'] ?>')">Catatan</a>
+                    <a href="<?= base_url('reports/').$value['doc_folder'].'/'.$value['doc_file'] ?>" class="text-decoration-none" target="_blank">
+                      <i class="bi-file-earmark-text fs-4"></i>
+                    </a>
+                    <?= $value['file_type_desc'] ?>
+
+                    <!-- Alasan ditolak jika status doc_detail = 4 -->
+                    <?php if ($value['doc_status'] == 4) { ?>
+                      <p class="form-text m-0"><b>Alasan ditolak :</b> <span class="text-danger"><?= $value['doc_rejected_note'] ?></span></p>
                     <?php } ?>
-                  </td>
-                  <td><?php echo $value['doc_modified_at'] ?></td>
-                  <td><?php echo $value['doc_verified_at'] ?></td>
                   <td>
-                    <button type="button" class="btn btn-sm btn-primary" onclick="verifikasiDokumen(<?php echo $value['doc_detail_id'] ?>)"
-                      <?php echo $disabled = $value['doc_status'] == 2 ? '' : 'disabled' ?>
-                    >
-                      Verifikasi
-                    </button>
+                    <span class="badge bg-<?= $value['status_color'] ?>"><?= $value['status_desc'] ?></span>
+                  </td>
+                  <td><?= $value['doc_modified_at'] ?></td>
+                  <td>
+                    <?php if ($value['doc_status'] == 2) { ?> 
+                      <button type="button" class="btn btn-sm btn-success" onclick="approve(<?= $value['doc_detail_id'] ?>)">
+                        Terima
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger" onclick="reject(<?= $value['doc_detail_id'] ?>)">
+                        Tolak
+                      </button>
+                    <?php } else { ?>
+                      <?= $value['doc_verified_at'] ?>
+                    <?php } ?>
                   </td>
                 </tr>
               <?php } ?>
@@ -71,52 +80,16 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="verifikasiDokumen" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Verifikasi Dokumen <span id="modalTitle"></span></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <form id="form_data">
-          <div class="modal-body">
-            <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
-            <input id="docDetail" type="hidden" name="doc_detail_id">
-            <div id="tampilkanDokumen">
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-            <button id="rejectDokumen" type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Tolak</button>
-            <button type="submit" class="btn btn-success">Verifikasi</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
-  function verifikasiDokumen(id) {
-    var verifikasiDokumen = new bootstrap.Modal(document.getElementById('verifikasiDokumen'), {
-      backdrop: 'static'
-    });
-    verifikasiDokumen.show();
+  /* ============================================================ */
+  /*
+  /* ============================================================ */
 
-    $.getJSON("<?= base_url() ?>document/getData?id=" + id, function(result){
-      $.each(result, function(index, value) {
-        $('#docDetail').val(value.doc_detail_id);
-        $('#modalTitle').html(value.file_type_desc);
-        $("#tampilkanDokumen").html('<iframe src="<?= base_url() ?>reports/' + value.doc_folder + '/' + value.doc_file + '" width="100%" height="500px"></iframe>');
-      });
-    });
-  }
-
-  $('#rejectDokumen').click(function() {
-    const {value: text} = Swal.fire({
+  function reject(doc_detail_id)
+  {
+    const { value: text } = Swal.fire({
       title: 'Tolak Dokumen ?',
       input: 'textarea',
       inputPlaceholder: 'Berikan alasan penolakan dokumen ...',
@@ -130,39 +103,27 @@
         }
       }
     }).then(function(result) {
-      if (result.isConfirmed == true) {
-        var data = new FormData($("#form_data")[0]);
+      if (result.isConfirmed == true)
+      {
+        var url = "<?= base_url('verify/reject') ?>";
 
-        data.append('doc_rejected_note', result.value);
-
-        $.ajax({
-          type: "POST",
-          url: "<?= base_url() ?>verify/reject",
-          data: data,
-          dataType: "json",
-          cache: false,
-          contentType: false,
-          processData: false,
-        })
-        .done(function (data) {
-          if(data.success == true) {
-            Swal.fire({
-              icon: 'success',
-              title: 'SUCCESS !',
-              text: 'Dokumen berhasil ditolak',
-              showConfirmButton: true
-            }).then(function() {
-              location.reload(true);
-            });
-          }
-        });
+        $.post(url, { doc_detail_id: doc_detail_id, doc_rejected_note: result.value }, function(data)
+        {
+          Swal.fire('SUCCESS', data.message, 'success')
+          .then((result) => {
+            location.reload(true);
+          });
+        }, "json");
       }
     });
-  });
+  }
 
-  $("form").submit(function (event) {
-    event.preventDefault();
+  /* ============================================================ */
+  /*
+  /* ============================================================ */
 
+  function approve(doc_detail_id)
+  {
     Swal.fire({
       title: 'CONFIRM !',
       text: "Apakah anda yakin ingin memverifikasi laporan ini ?",
@@ -173,43 +134,18 @@
       confirmButtonText: 'Ya',
       cancelButtonText: 'Batal'
     }).then((result) => {
-      if (result.isConfirmed) {
-        var data = new FormData($("#form_data")[0]);
+      if (result.isConfirmed)
+      {
+        var url = "<?= base_url('verify/approve') ?>";
 
-        $.ajax({
-          type: "POST",
-          url: "<?= base_url() ?>verify/edit",
-          data: data,
-          dataType: "json",
-          cache: false,
-          contentType: false,
-          processData: false,
-        })
-        .done(function (data) {
-          if(data.success == true) {
-            Swal.fire({
-              icon: 'success',
-              title: 'SUCCESS !',
-              text: 'Dokumen berhasil diverifikasi',
-              showConfirmButton: true
-            }).then(function() {
-              location.reload(true);
-            });
-          } else {
-            $.each(data.errors, function(index, value) {
-              Swal.fire({
-                icon: 'warning',
-                title: 'PERHATIAN !',
-                text: value,
-                showConfirmButton: true
-              })
-            })
-          }
-        })
-        .fail(function () {
-          $.notify("Terjadi masalah saat koneksi ke server !");
-        });
+        $.post(url, { doc_detail_id: doc_detail_id }, function(data)
+        {
+          Swal.fire('SUCCESS', data.message, 'success')
+          .then((result) => {
+            location.reload(true);
+          });
+        }, "json");
       }
     })
-  });
+  }
 </script>

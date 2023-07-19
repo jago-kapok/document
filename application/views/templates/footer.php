@@ -70,15 +70,6 @@
         icon: 'info'
       });
     }
-
-    /* ============================ */
-    /* Lihar Revisi              
-    /* ============================ */
-
-    function lihatCatatan(note)
-    {
-      Swal.fire('NOTE !', note,'info');
-    }
   </script>
 </body>
 </html>
