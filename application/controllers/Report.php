@@ -51,9 +51,7 @@ class Report extends CI_Controller
         $data['doc'] 		= $this->Documents->getDocumentDetail($doc_id, 5)->result_array();
         $data['doc_id'] 	= $doc_id;
 
-		$data['doc_history'] = $this->db->where(['doc_id' => $doc_id, 'doc_status' => 5])->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
-								->join('user', 'user.user_id = document_detail.doc_rejected_by', 'left')
-								->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
+		$data['doc_history'] = $this->Documents->getDocumentRevisi($doc_id)->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('report/view', $data);
@@ -70,11 +68,19 @@ class Report extends CI_Controller
 
 		switch ($for) {
 			case 'verify':
-				$_where = 'doc_status = 2';
+				$_where = 'doc_status = 2 AND doc_active != 0';
 				break;
 			
+			case 'prints':
+				$_where = 'doc_status = 3 AND doc_active != 0';
+				break;
+
+			case 'user':
+				$_where = 'company.company_id = '.user()->company_id.' AND doc_active != 0';
+				break;
+
 			default:
-				$_where = NULL;
+				$_where = 'doc_active != 0';
 				break;
 		}
 
@@ -92,11 +98,7 @@ class Report extends CI_Controller
 		$_key	= "doc_id";
 		$_coll	= [
 			["db" => "doc_year",		"dt" => "doc_year"],
-			["db" => "doc_periode",		"dt" => "doc_periode",
-				"formatter" => function($data, $row) {
-					return "SMT. ".$data;
-				}
-			],
+			["db" => "doc_periode",		"dt" => "doc_periode"],
 			["db" => "company_name",	"dt" => "company_name"],
 			["db" => "status_desc",		"dt" => "status_desc"],
 			["db" => "doc_verified_at",	"dt" => "doc_verified_at"],
@@ -106,8 +108,9 @@ class Report extends CI_Controller
 			["db" => "status_color",	"dt" => "status_color"],
 			["db" => "company_address",	"dt" => "company_address"],
 			["db" => "company_pic",		"dt" => "company_pic"],
+			["db" => "doc_created_at",	"dt" => "doc_created_at"],
 		];
-		
+
 		$_join	= 'JOIN company ON company.company_id = document.company_id
 					JOIN status ON status.status_id = document.doc_status';
 
@@ -115,23 +118,4 @@ class Report extends CI_Controller
 			Datatables_ssp::complex($_GET, $_conn, $_table, $_key, $_coll, $_where, NULL, $_join)
 		);
 	}
-
-	/* ============================================================ */
-	/*
-	/* ============================================================ */
-	
-	public function delete()
-    {
-    	$id = $this->input->get('id');
-        
-		$this->db->set('company_id', 0);
-		$this->db->set('doc_active', 0);
-		
-		$this->db->where('doc_id', $id)->update('document');
-
-		$data['success'] = true;
-		$data['message'] = 'Success!';
-
-		echo json_encode($data);
-    }
 }

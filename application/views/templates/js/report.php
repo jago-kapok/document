@@ -34,7 +34,9 @@ var table = $("table#table_data").DataTable({
             className: "text-left"
         }, {
             data: "doc_periode",
-            className: "text-left"
+            render: function(data, type, row) {
+                return 'SMT. ' + data;
+            }
         }, {
             data: "company_name",
             render: function(data, type, row) {
@@ -51,7 +53,7 @@ var table = $("table#table_data").DataTable({
         }, {
             data: "doc_id",
             render: function(data, type, row) {
-                return '<a href="<?= base_url() ?>report/view/' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>&nbsp;<a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="deleteData(' + data + ')"><i class="bi-trash"></i></a>';
+                return '<a href="<?= base_url("report/view/") ?>' + data + '" class="btn btn-primary btn-sm"><i class="bi-search"></i></a>&nbsp;<a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="deleteData(' + data + ')"><i class="bi-trash"></i></a>';
             }
         }
 
@@ -77,7 +79,7 @@ $('select#pagelength').on('change', function() {
 /*
 /* ============================================================ */
 
-function deleteData(id) {
+function deleteData(doc_id) {
     Swal.fire({
         title: 'PERHATIAN !',
         text: "Anda yakin ingin menghapus data ini ?",
@@ -90,23 +92,19 @@ function deleteData(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                    type: "GET",
-                    url: "<?= base_url() ?>report/delete?id=" + id,
-                    dataType: "json",
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                })
-                .done(function(data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'SUCCESS',
-                        text: 'Data laporan berhasil dihapus !',
-                        showConfirmButton: true
-                    }).then((result) => {
-                        table.draw();
-                    });
+                type: "GET",
+                url: "<?= base_url('verify/delete') ?>?id=" + doc_id,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                cache: false,
+            })
+            .done(function(data) {
+                Swal.fire('SUCCESS', 'Data laporan berhasil dihapus !', 'success')
+                .then((result) => {
+                    table.draw(false);
                 });
+            });
         }
     })
 }

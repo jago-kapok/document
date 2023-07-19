@@ -17,7 +17,7 @@
       Laporan sudah terkirim ke Dinas Lingkungan Hidup Kab. Bojonegoro. Terima kasih.
     </div>
   <?php else: ?>
-    <div class="alert alert-danger" data-aos="fade-up">
+    <div class="alert alert-danger">
       Tekan tombol <b>"Kirim Laporan"</b> setelah semua dokumen selesai diupload, untuk selanjutnya diverifikasi oleh Dinas Lingkungan Hidup Kab. Bojonegoro
     </div>
   <?php endif; ?>
@@ -56,7 +56,7 @@
                 <br><span class="form-text">Mencakup limbah yang dihasilkan, hasil produksi, dan sampah domestik (perbulan)</span>
               <?php endif; ?>
               <?php if ($data['doc_status'] == 4): ?>
-                <br><span class="form-text text-danger"><b>Alasan ditolak : </b><?= $data['doc_rejected_note'] ?></span>
+                <br><span class="form-text"><b>Alasan ditolak : </b><span class="text-danger"><?= $data['doc_rejected_note'] ?></span></span>
               <?php endif; ?>
             </label>
 
@@ -87,32 +87,44 @@
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-success">
-                  <div><i class="bi-check-circle" style="font-size: 1.5rem"></i></div>
-                  <div class="ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Lihat Dokumen</a></div>
+                  <div><i class="bi-check-circle fs-3"></i></div>
+                  <div class="ms-2">
+                    <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
+                      Lihat Dokumen
+                    </a>
+                  </div>
                 </div>
               </div>
 
             <!-- Dokumen Sudah Diverifikasi -->
             <?php elseif ($data['doc_status'] == 3): ?>
               <div class="col-md-3">
-                <button type="button" class="btn btn-info btn-upload" disabled><i class="bi-info-circle"></i>&nbsp;&nbsp;Dok. Terverifikasi</button>
+                <button type="button" class="btn btn-success btn-upload" disabled><i class="bi-check-circle"></i>&nbsp;&nbsp;Sudah Verifikasi</button>
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-success">
-                  <div><i class="bi-check-circle" style="font-size: 1.5rem"></i></div>
-                  <div class="ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Lihat Dokumen</a></div>
+                  <div><i class="bi-check-circle fs-3"></i></div>
+                  <div class="ms-2">
+                    <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
+                      Lihat Dokumen
+                    </a>
+                  </div>
                 </div>
               </div>
 
             <!-- Dokumen Perlu Direvisi -->
             <?php elseif ($data['doc_status'] == 4): ?>
               <div class="col-md-3">
-                <button type="button" class="btn btn-success btn-upload" onclick="showModalUpload('<?= $file_type_id ?>', '<?= $file_type_desc ?>', '<?= $doc->doc_id ?>')"><i class="bi-upload"></i>&nbsp;&nbsp;Upload Revisi</button>
+                <button type="button" class="btn btn-danger btn-upload" onclick="showModalRevisi('<?= $file_type_desc ?>', '<?= $doc_detail_id ?>')"><i class="bi-upload"></i>&nbsp;&nbsp;Upload Revisi</button>
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-danger">
-                  <div><i class="bi-info-circle" style="font-size: 1.5rem"></i></div>
-                  <div class="text-danger ms-2"><a href="<?= base_url() ?>reports/<?= $data['doc_folder'] ?>/<?= $data['doc_file'] ?>" target="_blank">Dokumen Ditolak</a></div>
+                  <div><i class="bi-info-circle fs-3"></i></div>
+                  <div class="text-danger ms-2">
+                    <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
+                      Lihat Dokumen
+                    </a>
+                  </div>
                 </div>
               </div>
             

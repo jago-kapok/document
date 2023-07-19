@@ -166,4 +166,49 @@ class SendReport extends CI_Controller
 
         echo json_encode($data);
     }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
+
+	public function revisi()
+	{
+		$errors = [];
+        $data 	= [];
+
+		$doc_detail_id	= $this->input->post('doc_detail_id');
+		$doc_detail		= $this->Documents->getFromDetailId($doc_detail_id, [])->row();
+		$doc			= $this->Documents->getDocumentById($doc_detail->doc_id)->row();
+
+		if ($_FILES['file_upload']['error'] > 0) {
+            $errors['error_upload'] = 'Mohon pilih dokumen terlebih dahulu !';
+        }
+	 
+		if (!empty($errors))
+		{
+            $data['success'] = false;
+            $data['errors']	 = $errors;
+        }
+        else
+        {
+			$location = FCPATH."/reports/".$doc->doc_folder;
+			$doc_file = upload_file($location, 'file_upload');
+
+			$data_post = array(
+				'doc_file'			=> $doc_file,
+				'doc_status'		=> 2,
+				'doc_modified_by'	=> user()->id,
+				'doc_modified_at'	=> date('Y-m-d H:i:s')
+			);
+
+			$this->db->update('document_detail', $data_post, ['doc_detail_id' => $doc_detail_id]);
+
+            $data['year'] 	 = $doc->doc_year;
+            $data['periode'] = $doc->doc_periode;
+            $data['success'] = true;
+            $data['message'] = 'Dokumen revisi berhasil diupload !';
+        }
+
+        echo json_encode($data);
+	}
 }

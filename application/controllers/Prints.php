@@ -6,82 +6,39 @@ class Prints extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-		authentication();
 
 		$this->load->library('PDF');
+		$this->load->model('Documents');
     }
+
+    /* ============================================================ */
+	/*
+	/* ============================================================ */
 
     public function index()
     {
         $data['year'] = $this->db->select('doc_year')->group_by('doc_year')->order_by('doc_year', 'desc')->get('document')->result_array();
+        $data['url']  = $this->uri->segment(1);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('print/index', $data);
+        $this->load->view('report/index', $data);
         $this->load->view('templates/footer');
 		$this->load->view('templates/js/print');
     }
 	
-	public function getData()
-	{
-		$this->load->library("datatables_ssp");
-		$_table = "document";
-		$_conn 	= [
-			"user" 	=> $this->db->username,
-			"pass" 	=> $this->db->password,
-			"db" 	=> $this->db->database,
-			"host" 	=> $this->db->hostname,
-			"port" 	=> $this->db->port
-		];
-		$_key	= "doc_id";
-		$_coll	= [
-			["db" => "doc_year",		"dt" => "doc_year"],
-			["db" => "doc_periode",		"dt" => "doc_periode",
-				"formatter" => function($data, $row) {
-					return "Semester ".$data;
-				}
-			],
-			["db" => "company_name",	"dt" => "company_name"],
-			["db" => "status_desc",		"dt" => "status_desc"],
-			["db" => "doc_verified_at",	"dt" => "doc_verified_at"],
-			["db" => "doc_id",			"dt" => "doc_id"],
-
-			["db" => "doc_status",		"dt" => "doc_status"],
-			["db" => "status_color",	"dt" => "status_color"],			
-			["db" => "company_address",	"dt" => "company_address"],
-			["db" => "company_pic",		"dt" => "company_pic"],
-		];
-		
-		$_where	= 'doc_status = 3';
-		$_join	= 'JOIN company ON company.company_id = document.company_id
-					JOIN status ON status.status_id = document.doc_status';
-
-		echo json_encode(
-			Datatables_ssp::complex($_GET, $_conn, $_table, $_key, $_coll, $_where, NULL, $_join)
-		);
-	}
-	
-	public function view()
-    {
-    	$id = $this->uri->segment(3);
-        $data['title'] = 'Verifikasi Laporan';
-        $data['doc'] = $this->db->where('doc_id', $id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
-        				->join('status', 'status.status_id = document_detail.doc_status')
-        				->join('user', 'user.user_id = document_detail.doc_verified_by')
-        				->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
-
-        $data['doc_id'] = $id;
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('report/view', $data);
-        $this->load->view('templates/footer');
-    }
-
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
 
     public function pdf()
     {
 		$doc_id	= $this->uri->segment(3);
-		$row = $this->db->where('doc_id', $doc_id)->join('company', 'company.company_id = document.company_id')->get('document')->row();
-		$doc = $this->db->where('doc_id', $doc_id)->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')->join('status', 'status.status_id = document_detail.doc_status')->order_by('document_detail.file_type_id')->get('document_detail')->result_array();
+		$row 	= $this->Documents->getDocumentById($doc_id)->row();
+		$doc 	= $this->db->where('doc_id', $doc_id)
+					->join('file_type', 'file_type.file_type_id = document_detail.file_type_id')
+					->join('status', 'status.status_id = document_detail.doc_status')
+					->order_by('document_detail.file_type_id')
+					->get('document_detail')->result_array();
 		
         // Generate PDF
         $pdf = new PDF();
@@ -140,7 +97,7 @@ class Prints extends CI_Controller
 		$pdf->Cell(175, 6, '', 'LRB', 0);
 		$pdf->Cell(25, 6, '', 'LRB', 1);
 
-		$pdf->Image('./assets/dist/img/qrcode.png', 182.5, 106, 20);
+		$pdf->Image('./assets/dist/img/qrcode.png', 182.5, 104, 20);
 
         $pdf->Output('TTE.pdf', 'I');
 		exit();

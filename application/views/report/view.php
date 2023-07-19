@@ -61,7 +61,12 @@
                   <td>
                     <span class="badge bg-<?= $value['status_color'] ?>"><?= $value['status_desc'] ?></span>
                   </td>
-                  <td><?= date('Y-m-d', strtotime($value['doc_modified_at'])) ?></td>
+                  <td>
+                    <?= $value['doc_modified_at'] ?
+                        date('Y-m-d', strtotime($value['doc_modified_at'])) :
+                        '<span class="text-danger">Belum Submit</span>'
+                    ?>
+                  </td>
                   <td><?= $value['doc_verified_at'] ?></td>
                   <td><?= ucwords($value['user_name']) ?></td>
                 </tr>
@@ -78,24 +83,25 @@
             <thead class="bg-danger text-light">
               <tr>
                 <th>No.</th>
-                <th>Nama Dokumen</th>
+                <th width="35%">Nama Dokumen</th>
                 <th>Tanggal Submit</th>
                 <th>Tanggal Revisi</th>
-                <th>Catatan</th>
+                <th>Catatan Revisi</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($doc_history as $key => $value) { ?>
                 <tr>
-                  <td><?php echo $key + 1 ?></td>
+                  <td><?= $key + 1 ?></td>
                   <td>
-                    <?php echo $value['file_type_desc'] ?>
-                    &nbsp;<a href="<?= base_url() ?>reports/<?php echo $value['doc_folder']; ?>/<?php echo $value['doc_file']; ?>" target="_blank"><i class="bi-folder-symlink"></i></a>
+                    <a href="<?= base_url('reports/').$value['doc_folder'].'/'.$value['doc_file'] ?>" target="_blank">
+                      <i class="bi-file-earmark-text fs-4"></i>
+                    </a>
+                    <?= $value['file_type_desc'] ?>
                   </td>
-                  <td><?php echo $value['doc_modified_at'] ?></td>
-                  <td><?php echo $value['doc_rejected_at'] ?></td>
-                  <td><?php echo $value['doc_rejected_note'] ?></td>
-                  <!-- <td><?php echo strtoupper($value['user_name']) ?></td> -->
+                  <td><?= $value['doc_modified_at'] ?></td>
+                  <td><?= $value['doc_rejected_at'] ?></td>
+                  <td><?= $value['doc_rejected_note'] ?></td>
                 </tr>
               <?php } ?>
             </tbody>

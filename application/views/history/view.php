@@ -2,8 +2,8 @@
   <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
 	    <li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
-	    <li class="breadcrumb-item"><a href="<?= base_url() ?>history">History Pelaporan</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">History Pelaporan Detail</li>
+	    <li class="breadcrumb-item"><a href="<?= base_url('history') ?>">History Pelaporan</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Detail Laporan</li>
 	  </ol>
 	</nav>
 

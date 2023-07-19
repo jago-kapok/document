@@ -20,7 +20,7 @@ var table = $("table#table_data").DataTable({
     bLengthChange: false,
     serverSide: true,
     scrollX: true,
-    order: [5, 'desc'],
+    order: [6, 'desc'],
     ajax: {
         url: "<?= base_url('report/getData?for=verify'); ?>",
         type: "GET"
@@ -34,7 +34,9 @@ var table = $("table#table_data").DataTable({
             className: "text-left"
         }, {
             data: "doc_periode",
-            className: "text-left"
+            render: function(data, type, row) {
+                return 'SMT. ' + data;
+            }
         }, {
             data: "company_name",
             render: function(data, type, row) {

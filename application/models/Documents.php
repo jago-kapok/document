@@ -62,6 +62,20 @@ class Documents extends CI_Model
 	/*
 	/* ============================================================ */
 
+	public function getDocumentRevisi($doc_id)
+	{
+		$this->db->from('document_rejected');
+		$this->db->join('document', 'document.doc_id = document_rejected.doc_id', 'left');
+		$this->db->join('file_type', 'file_type.file_type_id = document_rejected.file_type_id', 'left');
+		$this->db->where('document.doc_id', $doc_id);
+		
+		return $this->db->get();
+	}
+
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
+
 	public function getDocumentAndCompany()
 	{
 		$this->db->select('document.*, company.company_name, company.company_address');

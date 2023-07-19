@@ -104,4 +104,20 @@ class Verify extends CI_Controller
         
         echo json_encode($data);
 	}
+
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
+	
+	public function delete()
+    {
+    	$doc_id = $this->input->get('id');
+        
+		$this->db->set('doc_active', 0);
+		$this->db->where('doc_id', $doc_id)->update('document');
+
+		$data['success'] = true;
+
+		echo json_encode($data);
+    }
 }

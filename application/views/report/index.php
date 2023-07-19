@@ -4,6 +4,8 @@
 	    <li class="breadcrumb-item"><a href="<?= base_url() ?>">Beranda</a></li>
 	    <?php if ($url == 'verify'): ?>
 	    	<li class="breadcrumb-item active" aria-current="page">Verifikasi Laporan</li>
+	    <?php elseif ($url == 'prints'): ?>
+	    	<li class="breadcrumb-item active" aria-current="page">Cetak Tanda Terima</li>
 	    <?php else: ?>
 	    	<li class="breadcrumb-item active" aria-current="page">Semua Laporan</li>
 	    <?php endif; ?>
