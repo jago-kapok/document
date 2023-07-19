@@ -44,3 +44,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 label {
     font-weight: 600;
 }
+
+.btn {
+    border-radius: 0.3em !important;
+}

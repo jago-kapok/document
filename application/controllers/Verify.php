@@ -22,7 +22,7 @@ class Verify extends CI_Controller
         $data['doc_id'] 	= $doc_id;
 
         $this->load->view('templates/header', $data);
-        $this->load->view('verify/view', $data);
+        $this->load->view('report/verify', $data);
         $this->load->view('templates/footer');
     }
 
