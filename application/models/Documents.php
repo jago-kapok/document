@@ -76,15 +76,43 @@ class Documents extends CI_Model
 	/*
 	/* ============================================================ */
 
-	public function getDocumentAndCompany()
+	public function getForDashboard($doc_status)
 	{
 		$this->db->select('document.*, company.company_name, company.company_address');
 		$this->db->from('document');
 		$this->db->join('company', 'company.company_id = document.company_id');
-		$this->db->where('document.doc_status', 2);
+		$this->db->like('document.doc_status', $doc_status);
 		$this->db->order_by('document.doc_modified_at', 'desc');
 
 		return $this->db->get();
+	}
+
+	public function getDetailDashboard()
+	{
+		$sql = '
+			SELECT
+				document.doc_id,
+				document.doc_year,
+				document.doc_periode,
+				company.company_name,
+				company.company_address,
+				SUM(IF(document_detail.doc_status = 2, 1, 0)) as waiting,
+				SUM(IF(document_detail.doc_status = 3, 1, 0)) as verified,
+				SUM(IF(document_detail.doc_status = 4, 1, 0)) as revision
+			FROM
+				document_detail
+				LEFT JOIN document ON document.doc_id = document_detail.doc_id
+				LEFT JOIN company ON company.company_id = document.company_id
+			WHERE
+				document.doc_status = 2 AND document.doc_active != 0
+			GROUP BY
+				document_detail.doc_id
+			ORDER BY
+				document.doc_id DESC';
+
+		$query = $this->db->query($sql);
+
+		return $query;
 	}
 
 	/* ============================================================ */

@@ -14,7 +14,13 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $data['doc'] = $this->Documents->getDocumentAndCompany()->result_array();
+        // $data['doc']        = $this->Documents->getForDashboard(2)->result_array();
+
+        $data['doc']        = $this->Documents->getDetailDashboard()->result_array();
+        $data['all']        = $this->Documents->getForDashboard('')->num_rows();
+        $data['waiting']    = $this->Documents->getForDashboard(2)->num_rows();
+        $data['verified']   = $this->Documents->getForDashboard(3)->num_rows();
+        $data['company']    = $this->db->get('company')->num_rows();
 
         if (user()->level == 1)
         {
