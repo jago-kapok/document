@@ -93,6 +93,7 @@
 			</div>
 
 			<div class="card-body">
+				<span>Keterangan : </span>
 				<table id="table_data" class="table table-striped" width="100%">
 					<thead class="bg-info text-light">
 						<tr>
@@ -106,6 +107,11 @@
 					</thead>
 					<tbody>
 						<?php foreach ($doc as $key => $val): ?>
+							<?php
+								$waiting  = ($val['waiting'] * 100) / 8;
+								$verified = ($val['verified'] * 100) / 8;
+								$revision = ($val['revision'] * 100) / 8;
+							?>
 							<tr>
 								<td><?= $key + 1 ?></td>
 								<td><?= $val['doc_year'] ?></td>
@@ -113,18 +119,22 @@
 								<td><?= $val['company_name'] ?><br><b>Lokasi Kegiatan : </b><?= $val['company_address'] ?></td>
 								<td>
 									<div class="progress">
-									  	<div class="progress-bar bg-success" style="width: <?= $val['verified'] ?>0%"
-									  		aria-valuenow="<?= $val['verified'] ?>0" aria-valuemin="0" aria-valuemax="80">
+										<div class="progress-bar bg-warning" style="width: <?= $waiting ?>%"
+									  		aria-valuenow="<?= $waiting ?>" aria-valuemin="0" aria-valuemax="100">
+									  		<?= $val['waiting'] ?>
+									  	</div>
+									  	<div class="progress-bar bg-success" style="width: <?= $verified ?>%"
+									  		aria-valuenow="<?= $verified ?>0" aria-valuemin="0" aria-valuemax="100">
 									  		<?= $val['verified'] ?>
 									  	</div>
-									  	<div class="progress-bar bg-danger" style="width: <?= $val['revision'] ?>0%"
-									  		aria-valuenow="<?= $val['revision'] ?>0" aria-valuemin="0" aria-valuemax="80">
+									  	<div class="progress-bar bg-danger" style="width: <?= $revision ?>%"
+									  		aria-valuenow="<?= $revision ?>0" aria-valuemin="0" aria-valuemax="100">
 									  		<?= $val['revision'] ?>
 								  		</div>
 									</div>
 								</td>
 								<td>
-									<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-success">
+									<a href="verify/view/<?= $val['doc_id'] ?>" class="btn btn-sm btn-primary">
 										<i class="bi-check-square"></i>&nbsp; Verifikasi
 									</a>
 								</td>
