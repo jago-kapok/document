@@ -87,6 +87,10 @@ class Documents extends CI_Model
 		return $this->db->get();
 	}
 
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
+
 	public function getDetailDashboard()
 	{
 		$sql = '
@@ -124,6 +128,24 @@ class Documents extends CI_Model
 		$this->db->from('document_detail');
 		$this->db->where('doc_detail_id', $doc_detail_id);
 		$this->db->where($_where);
+		
+		return $this->db->get();
+	}
+
+	/* ============================================================ */
+	/*
+	/* ============================================================ */
+
+	public function getStatusPelaporan($company_id)
+	{
+		$this->db->select('status.status_desc, status.status_color, file_type.file_type_desc, document_detail.doc_modified_at, document.doc_year, document.doc_periode');
+		$this->db->from('document_detail');
+		$this->db->join('document', 'document.doc_id = document_detail.doc_id','left');
+		$this->db->join('file_type', 'file_type.file_type_id = document_detail.file_type_id','left');
+		$this->db->join('status', 'status.status_id = document_detail.doc_status');
+		$this->db->where('document_detail.company_id', $company_id);
+		$this->db->order_by('document_detail.doc_modified_at DESC');
+		$this->db->limit(8);
 		
 		return $this->db->get();
 	}

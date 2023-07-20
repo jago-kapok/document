@@ -12,10 +12,12 @@ class Admin extends CI_Controller
         $this->load->model('Documents');
     }
 
+    /* ============================================================ */
+    /*
+    /* ============================================================ */
+
     public function index()
     {
-        // $data['doc']        = $this->Documents->getForDashboard(2)->result_array();
-
         $data['doc']        = $this->Documents->getDetailDashboard()->result_array();
         $data['all']        = $this->Documents->getForDashboard('')->num_rows();
         $data['waiting']    = $this->Documents->getForDashboard(2)->num_rows();
@@ -34,9 +36,13 @@ class Admin extends CI_Controller
         }
     }
 
+    /* ============================================================ */
+    /*
+    /* ============================================================ */
+
     public function user()
     {
-        $data['users'] = [];
+        $data['status_pelaporan'] = $this->Documents->getStatusPelaporan(user()->company_id)->result_array();
         
         $this->load->view('templates/header', $data);
         $this->load->view('admin/user', $data);

@@ -65,7 +65,7 @@
     function aboutApp()
     {
       Swal.fire({
-        title: 'SIPP DOKLING v1.0',
+        title: 'SIPP DOKLING v1.12.7',
         html: 'Dinas Lingkungan Hidup Kab. Bojonegoro &copy; 2022',
         icon: 'info'
       });

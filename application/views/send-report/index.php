@@ -81,13 +81,13 @@
             <!-- Dokumen Menunggu Verifikasi -->
             <?php elseif ($data['doc_status'] == 2): ?>
               <div class="col-md-3">
-                <button type="button" class="btn btn-warning btn-upload" disabled>
+                <button type="button" class="btn text-warning fw-bold btn-upload" disabled>
                   <i class="bi-info-circle"></i>&nbsp;&nbsp;Menunggu Verifikasi
                 </button>
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-success">
-                  <div><i class="bi-check-circle fs-3"></i></div>
+                  <div><i class="bi-file-earmark-text fs-3"></i></div>
                   <div class="ms-2">
                     <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
                       Lihat Dokumen
@@ -99,11 +99,11 @@
             <!-- Dokumen Sudah Diverifikasi -->
             <?php elseif ($data['doc_status'] == 3): ?>
               <div class="col-md-3">
-                <button type="button" class="btn btn-success btn-upload" disabled><i class="bi-check-circle"></i>&nbsp;&nbsp;Sudah Verifikasi</button>
+                <button type="button" class="btn text-success fw-bold btn-upload" disabled><i class="bi-check-circle"></i>&nbsp;&nbsp;Sudah Verifikasi</button>
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-success">
-                  <div><i class="bi-check-circle fs-3"></i></div>
+                  <div><i class="bi-file-earmark-text fs-3"></i></div>
                   <div class="ms-2">
                     <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
                       Lihat Dokumen
@@ -119,7 +119,7 @@
               </div>
               <div class="col-md-3">
                 <div class="d-flex align-items-center text-danger">
-                  <div><i class="bi-info-circle fs-3"></i></div>
+                  <div><i class="bi-file-earmark-text fs-3"></i></div>
                   <div class="text-danger ms-2">
                     <a href="<?= base_url('reports/').$data['doc_folder'].'/'.$data['doc_file'] ?>" target="_blank">
                       Lihat Dokumen
