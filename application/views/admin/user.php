@@ -10,7 +10,7 @@
 				<ul class="timeline mt-3 mb-0">
 					<?php foreach ($status_pelaporan as $row): ?>
 						<li class="timeline-item">
-							<a href="<?= base_url('sendReport').'?year='.$row['doc_year'].'&periode='.$row['doc_periode'] ?>" class="text-<?= $row['status_color'] ?>">
+							<a href="<?= base_url('sendreport').'?year='.$row['doc_year'].'&periode='.$row['doc_periode'] ?>" class="text-<?= $row['status_color'] ?>">
 								<strong><?= $row['status_desc'] ?></strong>
 							</a>
 							<span class="float-end text-muted text-sm">

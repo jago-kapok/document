@@ -91,7 +91,7 @@ $("#form_data_upload").submit(function(event) {
 
     $.ajax({
         type: "POST",
-        url: "<?= base_url('sendReport/store') ?>",
+        url: "<?= base_url('sendreport/store') ?>",
         data: data,
         dataType: "json",
         enctype: 'multipart/form-data',
@@ -103,7 +103,7 @@ $("#form_data_upload").submit(function(event) {
         if (data.success == true) {
             Swal.fire('SUCCESS', data.message, 'success')
             .then(function() {
-                window.location = "<?= base_url('sendReport') ?>?year=" + data.year + "&periode=" + data.periode;
+                window.location = "<?= base_url('sendreport') ?>?year=" + data.year + "&periode=" + data.periode;
             });
         } else {
             $.each(data.errors, function(index, value) {
@@ -138,7 +138,7 @@ function hapusDokumen(doc_detail_id)
             $.post(url, { doc_detail_id: doc_detail_id }, function(data) {
                 Swal.fire('SUCCESS', data.message, 'success')
                 .then(function() {
-                    window.location = "<?= base_url('sendReport') ?>?year=" + data.year + "&periode=" + data.periode;
+                    window.location = "<?= base_url('sendreport') ?>?year=" + data.year + "&periode=" + data.periode;
                 });
             }, "json");
         }
@@ -151,7 +151,7 @@ function hapusDokumen(doc_detail_id)
 
 function kirimLaporan(doc_id)
 {
-    let url = "<?= base_url('sendReport/send') ?>";
+    let url = "<?= base_url('sendreport/send') ?>";
     Swal.fire({
         title: 'CONFIRM !',
         text: 'Laporan yang sudah dikirim adalah laporan final dan tidak bisa diedit kembali ! Apakah anda yakin ?',
@@ -167,7 +167,7 @@ function kirimLaporan(doc_id)
                 if (data.success == true) {
                     Swal.fire('TERIMA KASIH', data.message, 'success')
                         .then(function() {
-                            window.location = "<?= base_url('sendReport') ?>?year=" + data.year + '&periode=' + data.periode;
+                            window.location = "<?= base_url('sendreport') ?>?year=" + data.year + '&periode=' + data.periode;
                         });
                 } else {
                     Swal.fire('ERROR', data.message, 'error');
@@ -187,7 +187,7 @@ $("#form_data_revisi").submit(function(event) {
 
     $.ajax({
         type: "POST",
-        url: "<?= base_url('sendReport/revisi') ?>",
+        url: "<?= base_url('sendreport/revisi') ?>",
         data: data,
         dataType: "json",
         enctype: 'multipart/form-data',
@@ -199,7 +199,7 @@ $("#form_data_revisi").submit(function(event) {
         if (data.success == true) {
             Swal.fire('SUCCESS', data.message, 'success')
             .then(function() {
-                window.location = "<?= base_url('sendReport') ?>?year=" + data.year + "&periode=" + data.periode;
+                window.location = "<?= base_url('sendreport') ?>?year=" + data.year + "&periode=" + data.periode;
             });
         } else {
             $.each(data.errors, function(index, value) {

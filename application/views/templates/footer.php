@@ -44,7 +44,7 @@
       var year = $('#doc_year').val();
       var periode = $('#doc_periode').val();
 
-      window.location.href = "<?= base_url('sendReport') ?>?year=" + year + "&periode=" + periode;
+      window.location.href = "<?= base_url('sendreport') ?>?year=" + year + "&periode=" + periode;
     });
 
     /* ============================ */

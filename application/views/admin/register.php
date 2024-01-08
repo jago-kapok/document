@@ -70,7 +70,7 @@
     <!-- Section: Design Block -->
     <div class="container">
       <div class="row justify-content-center align-items-center">
-        <div class="col-8 position-relative">
+        <div class="position-relative">
           <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
           <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 

@@ -48,7 +48,7 @@ var table = $("table#table_data").DataTable({
                     var prints_button = '';
                 }
 
-                return '<a href="<?= base_url("sendReport") ?>?year=' + row.doc_year + '&periode=' + row.doc_periode + '" class="btn btn-warning btn-sm me-1"><i class="bi-pencil-square"></i></a>' +
+                return '<a href="<?= base_url("sendreport") ?>?year=' + row.doc_year + '&periode=' + row.doc_periode + '" class="btn btn-warning btn-sm me-1"><i class="bi-pencil-square"></i></a>' +
                         '<a href="<?= base_url("history/view/") ?>' + data + '" class="btn btn-primary btn-sm me-1"><i class="bi-file-earmark-text"></i></a>' +
                         prints_button;
             }

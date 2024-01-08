@@ -101,7 +101,7 @@
           <?php endif; ?>
 
           <?php if (in_array(user()->level, [2])): ?>
-            <li class="sidebar-item <?= $this->uri->segment(1) == 'sendReport' ? 'active' : '' ?>">
+            <li class="sidebar-item <?= $this->uri->segment(1) == 'sendreport' ? 'active' : '' ?>">
               <a class="sidebar-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalSendReport">
                 <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pelaporan Dokumen</span>
               </a>

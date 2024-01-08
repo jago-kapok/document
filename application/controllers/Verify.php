@@ -49,7 +49,7 @@ class Verify extends CI_Controller
         /* Cek Jumlah Dokumen Terverifikasi */
 
         $total_doc		= $this->db->get('file_type')->num_rows();
-		$total_approve	= $this->Documents->getDocumentDetailById(70, ['doc_status' => 3])->num_rows();
+		$total_approve	= $this->Documents->getDocumentDetailById($doc_id, ['doc_status' => 3])->num_rows();
 
         if ($total_doc == $total_approve)
         {
